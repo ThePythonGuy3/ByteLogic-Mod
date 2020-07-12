@@ -1,0 +1,11 @@
+health: 100
+name: Relay
+description: Basic Signal transport method
+update: true
+targetable: false
+rotate: true
+alwaysReplace: true
+requirements: [
+  lead/10
+]
+research: swarmer

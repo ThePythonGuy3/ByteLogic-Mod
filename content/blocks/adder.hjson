@@ -1,0 +1,10 @@
+health: 100
+name: Adder
+description: Adds the values from its sides
+update: true
+targetable: false
+rotate: true
+requirements: [
+  lead/10
+]
+research: swarmer
