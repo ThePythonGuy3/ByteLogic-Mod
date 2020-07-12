@@ -1,7 +1,7 @@
 const swit = extendContent(Block, "switch", {
 	update(tile){
 		if(tile.front().block().name == "bytmod-relay"){
-    		tile.front().ent().setSignal(tile.ent().getSignal());
+    		tile.front().ent().addTempSignal(tile.ent().getSignal());
     	}
 	},
 	draw(tile){
