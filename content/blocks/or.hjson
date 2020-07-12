@@ -1,0 +1,10 @@
+health: 100
+name: Or Gate
+description: a > 0 or b > 0
+update: true
+targetable: false
+rotate: true
+requirements: [
+  lead/10
+]
+research: swarmer

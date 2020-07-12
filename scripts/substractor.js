@@ -5,15 +5,15 @@ function pointAt(x, y, rotation, cx, cy){
         return false;
     }
 }
-const adder = extendContent(Block, "adder", {
+const substractor = extendContent(Block, "substractor", {
 	update(tile){
 		entity = tile.ent();
     	if(tile.right().block().name.startsWith("bytmod") && tile.left().block().name.startsWith("bytmod") && pointAt(tile.right().x, tile.right().y, tile.right().rotation(), tile.x, tile.y) && pointAt(tile.left().x, tile.left().y, tile.left().rotation(), tile.x, tile.y)){
-    		entity.setSignal(tile.left().ent().getSignal()+tile.right().ent().getSignal());
-    	} else if(tile.right().block().name.startsWith("bytmod") && pointAt(tile.right().x, tile.right().y, tile.right().rotation(), tile.x, tile.y)){
-    		entity.setSignal(tile.right().ent().getSignal());
-    	} else if(tile.left().block().name.startsWith("bytmod") && pointAt(tile.left().x, tile.left().y, tile.left().rotation(), tile.x, tile.y)){
-    		entity.setSignal(tile.left().ent().getSignal());
+    		if(tile.left().ent().getSignal()>tile.right().ent().getSignal()){
+                entity.setSignal(tile.left().ent().getSignal()-tile.right().ent().getSignal());
+            } else {
+                entity.setSignal(0);
+            }
     	} else {
     		entity.setSignal(0);
     	}
@@ -32,7 +32,7 @@ const adder = extendContent(Block, "adder", {
 		entity = tile.ent();
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
 		Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
-		Draw.rect(Core.atlas.find("bytmod-adder"), tile.drawx(), tile.drawy(), tile.rotation()*90);
+		Draw.rect(Core.atlas.find("bytmod-substractor"), tile.drawx(), tile.drawy(), tile.rotation()*90);
   		Draw.reset();
   	},
   	setBars(){
@@ -47,9 +47,9 @@ const adder = extendContent(Block, "adder", {
 		}));
   	}
 });
-adder.category = Category.power;
-adder.size = 1;
-adder.entityType = prov(() => {
+substractor.category = Category.power;
+substractor.size = 1;
+substractor.entityType = prov(() => {
 	const entity = extend(TileEntity, {
 		getSignal: function(){
 			return this._signal;

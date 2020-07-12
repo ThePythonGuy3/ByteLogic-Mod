@@ -1,7 +1,13 @@
 const swit = extendContent(Block, "switch", {
 	update(tile){
-		if(tile.front().block().name == "bytmod-relay"){
-    		tile.front().ent().addTempSignal(tile.ent().getSignal());
+		if(tile.front().block().name.startsWith("bytmod")){
+			if(tile.front().block().name == "bytmod-relay"){
+    			tile.front().ent().setTempSignal(tile.ent().getSignal());
+    		} else {
+    			if(tile.front().ent().asignal() == true){
+    				tile.front().ent().setSignal(tile.ent().getSignal());
+    			}
+    		}
     	}
 	},
 	draw(tile){
@@ -40,6 +46,9 @@ swit.entityType = prov(() => {
 		},
 		setSignal: function(val){
 			this._signal = val;
+		},
+		asignal: function(){
+			return false;
 		}
 	});
 	entity.setSignal(0);

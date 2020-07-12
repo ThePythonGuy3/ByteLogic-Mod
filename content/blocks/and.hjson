@@ -1,0 +1,10 @@
+health: 100
+name: And Gate
+description: a & b > 0
+update: true
+targetable: false
+rotate: true
+requirements: [
+  lead/10
+]
+research: swarmer
