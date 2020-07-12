@@ -1,10 +1,8 @@
 const relay = extendContent(Block, "relay", {
 	update(tile){
-tile.ent().setSignal(tile.ent().getTempSignal());
-tile.ent().setTempSignal(0);
 		if(tile.front().block().name == "bytmod-relay"){
-    		tile.front().ent().addTempSignal(tile.ent().getSignal());
-    		
+    		tile.front().ent().setSignal(tile.ent().getSignal());
+    		tile.ent().setSignal(0);
     	}
 	},
 	draw(tile){
@@ -47,15 +45,6 @@ relay.entityType = prov(() => {
 		},
 		setSignal: function(val){
 			this._signal = val;
-		},
-getTempSignal: function(){
-			return this._tsignal;
-		},
-		setTempSignal: function(val){
-			this._tsignal = val;
-		},
-		addTempSignal: function(val){
-			this._signal += val;
 		}
 	});
 	entity.setSignal(0);
