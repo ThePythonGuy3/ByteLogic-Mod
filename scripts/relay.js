@@ -55,7 +55,7 @@ getTempSignal: function(){
 			this._tsignal = val;
 		},
 		addTempSignal: function(val){
-			this._signal += val;
+			this._tsignal += val;
 		}
 	});
 	entity.setSignal(0);
