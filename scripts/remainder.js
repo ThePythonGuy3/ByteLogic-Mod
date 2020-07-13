@@ -9,7 +9,9 @@ const remainder = extendContent(Block, "remainder", {
 	update(tile){
 		entity = tile.ent();
     	if(tile.right().block().name.startsWith("bytmod") && tile.left().block().name.startsWith("bytmod") && pointAt(tile.right().x, tile.right().y, tile.right().rotation(), tile.x, tile.y) && pointAt(tile.left().x, tile.left().y, tile.left().rotation(), tile.x, tile.y)){
-    		entity.setSignal(Mathf.floor(tile.left().ent().getSignal()%tile.right().ent().getSignal()));
+    		if(tile.right().ent().getSignal()!=0){
+    			entity.setSignal(Mathf.floor(tile.left().ent().getSignal()%tile.right().ent().getSignal()));
+    		}
     	} else {
     		entity.setSignal(0);
     	}

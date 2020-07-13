@@ -1,0 +1,13 @@
+health: 100
+name: Signal Node
+description: Transfers signal over the distance
+update: true
+targetable: false
+configurable: true
+posConfig: true
+layer: power
+rotate: false
+requirements: [
+  lead/10
+]
+research: swarmer

@@ -5,17 +5,17 @@ function pointAt(x, y, rotation, cx, cy){
         return false;
     }
 }
-const notgate = extendContent(Block, "not", {
+const equalizer = extendContent(Block, "equalizer", {
 	update(tile){
 		entity = tile.ent();
-    	if(tile.back().block().name.startsWith("bytmod") && pointAt(tile.back().x, tile.back().y, tile.back().rotation(), tile.x, tile.y)){
-    		if(tile.back().ent().getSignal()==1){
-                entity.setSignal(0);
-            } else {
-                entity.setSignal(1);
-            }
+    	if(tile.right().block().name.startsWith("bytmod") && tile.left().block().name.startsWith("bytmod") && pointAt(tile.right().x, tile.right().y, tile.right().rotation(), tile.x, tile.y) && pointAt(tile.left().x, tile.left().y, tile.left().rotation(), tile.x, tile.y)){	
+        	if(tile.right().ent().getSignal()==tile.left().ent().getSignal()){
+        		entity.setSignal(tile.left().ent().getSignal());
+        	} else {
+    			entity.setSignal(0);
+    		}
     	} else {
-    		entity.setSignal(1);
+    		entity.setSignal(0);
     	}
     	if(tile.front().block().name.startsWith("bytmod") && tile.front().ent().asignal() == true){
     		if(tile.front().block().name == "bytmod-relay"){
@@ -29,7 +29,7 @@ const notgate = extendContent(Block, "not", {
 		entity = tile.ent();
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
 		Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
-		Draw.rect(Core.atlas.find("bytmod-not"), tile.drawx(), tile.drawy(), tile.rotation()*90);
+		Draw.rect(Core.atlas.find("bytmod-equalizer"), tile.drawx(), tile.drawy(), tile.rotation()*90);
   		Draw.reset();
   	},
   	setBars(){
@@ -44,9 +44,9 @@ const notgate = extendContent(Block, "not", {
 		}));
   	}
 });
-notgate.category = Category.power;
-notgate.size = 1;
-notgate.entityType = prov(() => {
+equalizer.category = Category.power;
+equalizer.size = 1;
+equalizer.entityType = prov(() => {
 	const entity = extend(TileEntity, {
 		getSignal: function(){
 			return this._signal;

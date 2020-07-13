@@ -8,12 +8,8 @@ function pointAt(x, y, rotation, cx, cy){
 const andgate = extendContent(Block, "and", {
 	update(tile){
 		entity = tile.ent();
-    	if(tile.right().block().name.startsWith("bytmod") && tile.left().block().name.startsWith("bytmod") && pointAt(tile.right().x, tile.right().y, tile.right().rotation(), tile.x, tile.y) && pointAt(tile.left().x, tile.left().y, tile.left().rotation(), tile.x, tile.y)){
-    		if(tile.left().ent().getSignal()==tile.right().ent().getSignal()&&tile.right().ent().getSignal()!=0){
-                entity.setSignal(1);
-            } else {
-                entity.setSignal(0);
-            }
+    	if(tile.right().block().name.startsWith("bytmod") && tile.left().block().name.startsWith("bytmod") && pointAt(tile.right().x, tile.right().y, tile.right().rotation(), tile.x, tile.y) && pointAt(tile.left().x, tile.left().y, tile.left().rotation(), tile.x, tile.y)){	
+        	entity.setSignal(tile.left().ent().getSignal()&tile.right().ent().getSignal());
     	} else {
     		entity.setSignal(0);
     	}

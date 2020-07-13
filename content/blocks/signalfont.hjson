@@ -1,0 +1,11 @@
+health: 100
+name: Signal Font
+description: Generated the desired amount of signal
+update: true
+targetable: false
+rotate: true
+consumesTap: true
+requirements: [
+  lead/10
+]
+research: swarmer

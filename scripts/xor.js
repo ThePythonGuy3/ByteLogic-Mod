@@ -9,11 +9,7 @@ const xorgate = extendContent(Block, "xor", {
 	update(tile){
 		entity = tile.ent();
     	if(tile.right().block().name.startsWith("bytmod") && tile.left().block().name.startsWith("bytmod") && pointAt(tile.right().x, tile.right().y, tile.right().rotation(), tile.x, tile.y) && pointAt(tile.left().x, tile.left().y, tile.left().rotation(), tile.x, tile.y)){
-    		if((tile.left().ent().getSignal()>0&&tile.right().ent().getSignal()==0)||(tile.right().ent().getSignal()>0&&tile.left().ent().getSignal()==0)){
-                entity.setSignal(1);
-            } else {
-                entity.setSignal(0);
-            }
+    		entity.setSignal(tile.left().block().ent().getSignal()^tile.right().block().ent().getSignal());
     	} else {
     		entity.setSignal(0);
     	}

@@ -1,0 +1,10 @@
+health: 100
+name: Comparator
+description: if(a > b) out = 1
+update: true
+targetable: false
+rotate: true
+requirements: [
+  lead/10
+]
+research: swarmer
