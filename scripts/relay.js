@@ -55,7 +55,7 @@ relay.entityType = prov(() => {
       //check if it should take signal(ex. adders should not accept back) here.
       if(this.timer.getTime(timerid)==0){
         this._signal += val;//relays are "add mode"
-      else{
+      } else {
         this._tsignal += val;
       }
     },
