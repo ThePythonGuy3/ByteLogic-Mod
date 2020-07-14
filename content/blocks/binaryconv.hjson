@@ -1,0 +1,10 @@
+health: 100
+name: Binary Block
+description: Converts its decimal input into binary
+update: true
+targetable: false
+rotate: true
+requirements: [
+  lead/10
+]
+research: swarmer

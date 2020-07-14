@@ -1,0 +1,10 @@
+health: 100
+name: Display
+description: Displays
+update: true
+targetable: false
+rotate: false
+requirements: [
+  lead/10
+]
+research: swarmer

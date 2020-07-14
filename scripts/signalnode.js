@@ -5,7 +5,6 @@ function pointAt(x, y, rotation, cx, cy){
         return false;
     }
 }
-
 const signalfont = extendContent(Block, "signalfont", {
 	update(tile){
 		entity = tile.ent();
@@ -37,7 +36,7 @@ const signalfont = extendContent(Block, "signalfont", {
   	},
   	tapped(tile, player){
   		entity = tile.ent();
-        Vars.ui.showTextInput(Core.bundle.get("bar.signal"), "", 25, entity.getSignal(), true, cons(result => {
+        Vars.ui.showTextInput(Core.bundle.get("bar.signal"), "", 8, entity.getSignal(), true, cons(result => {
             entity.setSignal(Strings.parseInt(result, 0));
         }));
     }
@@ -54,8 +53,15 @@ signalfont.entityType = prov(() => {
 		},
 		asignal: function(){
 			return false;
+		},
+		ioread: function(val){
+			return this._io;
+		},
+		ioset: function(val){
+			this._io = val;
 		}
 	});
 	entity.setSignal(0);
+	entity.inset(true);
 	return entity;
 });

@@ -5,10 +5,35 @@ function pointAt(x, y, rotation, cx, cy){
         return false;
     }
 }
+function dtb(number){
+    var binary = "";
+    var temp = number;
+ 
+    while(temp > 0){
+        if(temp % 2 == 0){
+            binary = "0" + binary;
+        }
+        else {
+            binary = "1" + binary;
+        }
 
-const signalfont = extendContent(Block, "signalfont", {
+        temp = Math.floor(temp / 2);
+    }
+
+    return binary;
+}
+const binaryconv = extendContent(Block, "binaryconv", {
 	update(tile){
 		entity = tile.ent();
+    	if(tile.back().block().name.startsWith("bytmod")&& pointAt(tile.back().x, tile.back().y, tile.back().rotation(), tile.x, tile.y)){	
+        	if(tile.front().block().name == "bytmod-binaryconv"){
+        		entity.setSignal(0);
+        	} else {
+                entity.setSignal(dtb(tile.back().ent().getSignal()));	
+        	}
+    	} else {
+    		entity.setSignal(0);
+    	}
     	if(tile.front().block().name.startsWith("bytmod") && tile.front().ent().asignal() == true){
     		if(tile.front().block().name == "bytmod-relay"){
     			tile.front().ent().setTempSignal(entity.getSignal());
@@ -21,7 +46,7 @@ const signalfont = extendContent(Block, "signalfont", {
 		entity = tile.ent();
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
 		Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
-		Draw.rect(Core.atlas.find("bytmod-signalfont"), tile.drawx(), tile.drawy(), tile.rotation()*90);
+		Draw.rect(Core.atlas.find("bytmod-binaryconv"), tile.drawx(), tile.drawy(), tile.rotation()*90);
   		Draw.reset();
   	},
   	setBars(){
@@ -34,17 +59,11 @@ const signalfont = extendContent(Block, "signalfont", {
 				}));
 			}
 		}));
-  	},
-  	tapped(tile, player){
-  		entity = tile.ent();
-        Vars.ui.showTextInput(Core.bundle.get("bar.signal"), "", 25, entity.getSignal(), true, cons(result => {
-            entity.setSignal(Strings.parseInt(result, 0));
-        }));
-    }
+  	}
 });
-signalfont.category = Category.power;
-signalfont.size = 1;
-signalfont.entityType = prov(() => {
+binaryconv.category = Category.power;
+binaryconv.size = 1;
+binaryconv.entityType = prov(() => {
 	const entity = extend(TileEntity, {
 		getSignal: function(){
 			return this._signal;
