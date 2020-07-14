@@ -16,10 +16,10 @@ const andgate = extendContent(Block, "and", {
 		entity = tile.ent();
 		var in1, in2;
 		if(isMod(tile.right()) && pointingAt(tile.right(), tile)){
-			in1 = tile.left().ent().getSignal();
+			in1 = tile.right().ent().getSignal();
 		} else in1 = 0;
     	if(isMod(tile.left()) && pointingAt(tile.left(), tile)){
-			in2 = tile.right().ent().getSignal();
+			in2 = tile.left().ent().getSignal();
 		} else in2 = 0;
         entity.setSignal(in1&in2);
     	if(isMod(tile.front()) && tile.front().ent().asignal() == true && !pointingAt(tile.front(), tile)){
