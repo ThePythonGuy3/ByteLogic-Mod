@@ -1,6 +1,6 @@
 health: 100
 name: Relay
-description: Basic Signal transport method
+description: Basic Signal transport method. Now upgraded!
 update: true
 targetable: false
 rotate: true

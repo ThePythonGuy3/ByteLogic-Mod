@@ -1,14 +1,8 @@
-function pointAt(x, y, rotation, cx, cy){
-    if((x-1 == cx && rotation == 2)||(x+1 == cx && rotation == 0)||(y+1 == cy && rotation == 1)||(y-1 == cy && rotation == 3)){
-        return true;
-    } else {
-        return false;
-    }
-}
+const tilel = require("tilelib");
 const divider = extendContent(Block, "divider", {
 	update(tile){
 		entity = tile.ent();
-    	if(tile.right().block().name.startsWith("bytmod") && tile.left().block().name.startsWith("bytmod") && pointAt(tile.right().x, tile.right().y, tile.right().rotation(), tile.x, tile.y) && pointAt(tile.left().x, tile.left().y, tile.left().rotation(), tile.x, tile.y)){
+    	if(tilel.isMod(tile.left()) && tilel.isMod(tile.right()) && tilel.pointingAt(tile.left(), tile) && tilel.pointingAt(tile.right(), tile)){
     		if(tile.right().ent().getSignal()!=0){
     			entity.setSignal(Mathf.floor(tile.left().ent().getSignal()/tile.right().ent().getSignal()));
     		}
@@ -18,13 +12,9 @@ const divider = extendContent(Block, "divider", {
     	if(entity.getSignal() == NaN){
     		entity.setSignal(0);
     	}
-    	if(tile.front().block().name.startsWith("bytmod") && tile.front().ent().asignal() == true){
-    		if(tile.front().block().name == "bytmod-relay"){
-    			tile.front().ent().setTempSignal(entity.getSignal());
-    		} else {
-    			tile.front().ent().setSignal(entity.getSignal());
-    		}
-    	}
+    	if(tilel.isMod(tile.front()) && tile.front().ent().asignal() == true && !tilel.pointingAt(tile.front(), tile)){
+            tile.front().ent().setSignal(entity.getSignal());
+        }
 	},
 	draw(tile){
 		entity = tile.ent();

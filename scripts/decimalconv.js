@@ -1,14 +1,8 @@
-function pointAt(x, y, rotation, cx, cy){
-    if((x-1 == cx && rotation == 2)||(x+1 == cx && rotation == 0)||(y+1 == cy && rotation == 1)||(y-1 == cy && rotation == 3)){
-        return true;
-    } else {
-        return false;
-    }
-}
+const tilel = require("tilelib");
 const decimalconv = extendContent(Block, "decimalconv", {
 	update(tile){
 		entity = tile.ent();
-    	if(tile.back().block().name.startsWith("bytmod")&& pointAt(tile.back().x, tile.back().y, tile.back().rotation(), tile.x, tile.y)){	
+    	if(tilel.isMod(tile.back()) && tilel.pointingAt(tile.back(), tile)){	
         	if(tile.front().block().name == "bytmod-decimalconv"){
                 entity.setSignal(0);
             } else {
@@ -17,13 +11,9 @@ const decimalconv = extendContent(Block, "decimalconv", {
     	} else {
     		entity.setSignal(0);
     	}
-    	if(tile.front().block().name.startsWith("bytmod") && tile.front().ent().asignal() == true){
-    		if(tile.front().block().name == "bytmod-relay"){
-    			tile.front().ent().setTempSignal(entity.getSignal());
-    		} else {
-    			tile.front().ent().setSignal(entity.getSignal());
-    		}
-    	}
+    	if(tilel.isMod(tile.front()) && tile.front().ent().asignal() == true && !tilel.pointingAt(tile.front(), tile)){
+            tile.front().ent().setSignal(entity.getSignal());
+        }
 	},
 	draw(tile){
 		entity = tile.ent();

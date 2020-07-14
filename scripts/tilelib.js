@@ -8,10 +8,27 @@ module.exports = {
       return false;
     }
   },
-  function pointingAt(tileCheck, tile){
-	  return pointAt(tileCheck.x, tileCheck.y, tileCheck.rotation(), tile.x, tile.y);
+  pointingAt(tileCheck, tile){
+	  return this.pointAt(tileCheck.x, tileCheck.y, tileCheck.rotation(), tile.x, tile.y);
   },
-  function isMod(tile){
+  isMod(tile){
 	  return tile.block().name.startsWith("bytmod");
+  },
+  dtb(number){
+    var binary = "";
+    var temp = number;
+ 
+    while(temp > 0){
+        if(temp % 2 == 0){
+            binary = "0" + binary;
+        }
+        else {
+            binary = "1" + binary;
+        }
+
+        temp = Math.floor(temp / 2);
+    }
+
+    return binary;
   },
 };

@@ -1,4 +1,4 @@
-function pointAt(x, y, rotation, cx, cy){
+/*function pointAt(x, y, rotation, cx, cy){
     if((x-1 == cx && rotation == 2)||(x+1 == cx && rotation == 0)||(y+1 == cy && rotation == 1)||(y-1 == cy && rotation == 3)){
         return true;
     } else {
@@ -10,24 +10,20 @@ function pointingAt(pointCheck, tile){
 }
 function isMod(tile){
 	return tile.block().name.startsWith("bytmod");
-}
+}*/
+const tilel = require("tilelib");
 const andgate = extendContent(Block, "and", {
 	update(tile){
 		entity = tile.ent();
-		var in1, in2;
-		if(isMod(tile.right()) && pointingAt(tile.right(), tile)){
-			in1 = tile.right().ent().getSignal();
-		} else in1 = 0;
-    	if(isMod(tile.left()) && pointingAt(tile.left(), tile)){
-			in2 = tile.left().ent().getSignal();
-		} else in2 = 0;
-        entity.setSignal(in1&in2);
-    	if(isMod(tile.front()) && tile.front().ent().asignal() == true && !pointingAt(tile.front(), tile)){
-    		if(tile.front().block().name == "bytmod-relay"){
-    			tile.front().ent().setTempSignal(entity.getSignal());
-    		} else {
-    			tile.front().ent().setSignal(entity.getSignal());
-    		}
+		if(tilel.isMod(tile.right()) && tilel.pointingAt(tile.right(), tile)){
+			entity.rset(tile.right().ent().getSignal());
+		} else entity.rset(0);
+    	if(tilel.isMod(tile.left()) && tilel.pointingAt(tile.left(), tile)){
+			entity.lset(tile.left().ent().getSignal());
+		} else entity.lset(0);
+        entity.setSignal(entity.lget()&entity.rget());
+    	if(tilel.isMod(tile.front()) && tile.front().ent().asignal() == true && !tilel.pointingAt(tile.front(), tile)){
+    		tile.front().ent().setSignal(entity.getSignal());
     	}
 	},
 	draw(tile){
@@ -61,8 +57,22 @@ andgate.entityType = prov(() => {
 		},
 		asignal: function(){
 			return false;
+		},
+		rset: function(val){
+			this._inr = val;
+		},
+		rget: function(){
+			return this._inr;
+		},
+		lset: function(val){
+			this._inl = val;
+		},
+		lget: function(){
+			return this._inl;
 		}
 	});
 	entity.setSignal(0);
+	entity.rset(0);
+	entity.lset(0);
 	return entity;
 });

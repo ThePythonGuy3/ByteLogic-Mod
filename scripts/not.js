@@ -1,28 +1,26 @@
-function pointAt(x, y, rotation, cx, cy){
+/*function pointAt(x, y, rotation, cx, cy){
     if((x-1 == cx && rotation == 2)||(x+1 == cx && rotation == 0)||(y+1 == cy && rotation == 1)||(y-1 == cy && rotation == 3)){
         return true;
     } else {
         return false;
     }
 }
+function pointingAt(pointCheck, tile){
+	return pointAt(pointCheck.x, pointCheck.y, pointCheck.rotation(), tile.x, tile.y);
+}
+function isMod(tile){
+	return tile.block().name.startsWith("bytmod");
+}*/
+const tilel = require("tilelib");
 const notgate = extendContent(Block, "not", {
 	update(tile){
 		entity = tile.ent();
-    	if(tile.back().block().name.startsWith("bytmod") && pointAt(tile.back().x, tile.back().y, tile.back().rotation(), tile.x, tile.y)){
-    		if(tile.back().ent().getSignal()==1){
-                entity.setSignal(0);
-            } else {
-                entity.setSignal(1);
-            }
-    	} else {
-    		entity.setSignal(1);
-    	}
-    	if(tile.front().block().name.startsWith("bytmod") && tile.front().ent().asignal() == true){
-    		if(tile.front().block().name == "bytmod-relay"){
-    			tile.front().ent().setTempSignal(entity.getSignal());
-    		} else {
-    			tile.front().ent().setSignal(entity.getSignal());
-    		}
+		if(tilel.isMod(tile.back()) && tilel.pointingAt(tile.back(), tile)){
+			entity.bset(tile.back().ent().getSignal());
+		} else entity.bset(0);
+        entity.setSignal(entity.bget()>0 ? 0 : 1);
+    	if(tilel.isMod(tile.front()) && tile.front().ent().asignal() == true && !tilel.pointingAt(tile.front(), tile)){
+    		tile.front().ent().setSignal(entity.getSignal());
     	}
 	},
 	draw(tile){
@@ -56,8 +54,15 @@ notgate.entityType = prov(() => {
 		},
 		asignal: function(){
 			return false;
+		},
+		bset: function(val){
+			this._inb = val;
+		},
+		bget: function(){
+			return this._inb;
 		}
 	});
 	entity.setSignal(0);
+	entity.bset(0);
 	return entity;
 });

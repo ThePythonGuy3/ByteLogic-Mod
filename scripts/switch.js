@@ -1,12 +1,9 @@
+const tilel = require("tilelib");
 const swit = extendContent(Block, "switch", {
 	update(tile){
-		if(tile.front().block().name.startsWith("bytmod")){
-			if(tile.front().block().name == "bytmod-relay"){
-    			tile.front().ent().setTempSignal(tile.ent().getSignal());
-    		} else {
-    			if(tile.front().ent().asignal() == true){
-    				tile.front().ent().setSignal(tile.ent().getSignal());
-    			}
+		if(tilel.isMod(tile.front()) && !(tilel.pointingAt(tile.front(), tile))){
+    		if(tile.front().ent().asignal() == true){
+    			tile.front().ent().setSignal(tile.ent().getSignal());
     		}
     	}
 	},
