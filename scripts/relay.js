@@ -1,14 +1,16 @@
+const timerid = 0;
 const relay = extendContent(Block, "relay", {
-	update(tile){
-		entity = tile.ent();
-		tile.ent().setSignal(tile.ent().getTempSignal());
-		tile.ent().setTempSignal(0);
-		if(tile.front().block().name == "bytmod-relay"){
-    		tile.front().ent().addTempSignal(tile.ent().getSignal());
-    		
-    	}
+  update(tile){
+    tile.ent().timer.reset(timerid, 0);
+    //calculate additional stuff here with tile.ent().getSignal();
+    try{
+      //you need sth better than a try here; check if the next entity has the setSignal method.
+      tile.front().link().ent().setSignal(tile.ent().getSignal());
+    }catch(err){}
+    tile.ent().internalSignal(tile.ent().getTempSignal());
+    tile.ent().setTempSignal(0);
     	if(entity.getSignal() == NaN){
-    		entity.setSignal(0);
+    		entity.internalSignal(0);
     	}
 	},
 	draw(tile){
@@ -49,9 +51,14 @@ relay.entityType = prov(() => {
 		getSignal: function(){
 			return this._signal;
 		},
-		setSignal: function(val){
-			this._signal = val;
-		},
+    setSignal: function(val, origin){
+      //check if it should take signal(ex. adders should not accept back) here.
+      if(this.timer.getTime(timerid)==0){
+        this._signal += val;//relays are "add mode"
+      else{
+        this._tsignal += val;
+      }
+    },
 getTempSignal: function(){
 			return this._tsignal;
 		},
@@ -61,11 +68,15 @@ getTempSignal: function(){
 		addTempSignal: function(val){
 			this._tsignal += val;
 		},
+		internalSignal: function(val){
+			this._signal = val;//do not call in other blocks!
+		},
 		asignal: function(){
 			return true;
 		}
 	});
-	entity.setSignal(0);
+	entity.internalSignal(0);
+	entity.setTempSignal(0);
 	return entity;
 });
 
