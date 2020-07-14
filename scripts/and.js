@@ -5,15 +5,24 @@ function pointAt(x, y, rotation, cx, cy){
         return false;
     }
 }
+function pointingAt(pointCheck, tile){
+	return pointAt(pointCheck.x, pointCheck.y, pointCheck.rotation(), tile.x, tile.y);
+}
+function isMod(tile){
+	return tile.block().name.startsWith("bytmod");
+}
 const andgate = extendContent(Block, "and", {
 	update(tile){
 		entity = tile.ent();
-    	if(tile.right().block().name.startsWith("bytmod") && tile.left().block().name.startsWith("bytmod") && pointAt(tile.right().x, tile.right().y, tile.right().rotation(), tile.x, tile.y) && pointAt(tile.left().x, tile.left().y, tile.left().rotation(), tile.x, tile.y)){	
-        	entity.setSignal(tile.left().ent().getSignal()&tile.right().ent().getSignal());
-    	} else {
-    		entity.setSignal(0);
-    	}
-    	if(tile.front().block().name.startsWith("bytmod") && tile.front().ent().asignal() == true){
+		var in1, in2;
+		if(isMod(tile.right()) && pointingAt(tile.right(), tile)){
+			in1 = tile.left().ent().getSignal();
+		} else in1 = 0;
+    	if(isMod(tile.left()) && pointingAt(tile.left(), tile)){
+			in2 = tile.right().ent().getSignal();
+		} else in2 = 0;
+        entity.setSignal(in1&in2);
+    	if(isMod(tile.front()) && tile.front().ent().asignal() == true && !pointingAt(tile.front(), tile)){
     		if(tile.front().block().name == "bytmod-relay"){
     			tile.front().ent().setTempSignal(entity.getSignal());
     		} else {
