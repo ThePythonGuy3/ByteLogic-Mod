@@ -1,6 +1,7 @@
 const timerid = 0;
 const relay = extendContent(Block, "relay", {
   update(tile){
+	  entity = tile.ent();
     tile.ent().timer.reset(timerid, 0);
     //calculate additional stuff here with tile.ent().getSignal();
     try{
