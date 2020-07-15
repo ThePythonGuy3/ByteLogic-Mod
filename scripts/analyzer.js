@@ -37,7 +37,7 @@ const analyzer = extendContent(Block, "analyzer", {
   		this.bars.add("signal", new Func({
 				get: function(entity){
 					return new Bar(prov(() => (Core.bundle.get("bar.signal") + ": " + entity.getSignal())), prov(() => Pal.ammo), new Floatp({get: function(){
-						return entity.getSignal();	
+						return entity.getSignal();
 					}
 				}));
 			}
@@ -97,4 +97,3 @@ analyzer.entityType = prov(() => {
 	entity.setMode("item");
 	return entity;
 });
-

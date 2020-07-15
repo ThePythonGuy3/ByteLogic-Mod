@@ -2,11 +2,11 @@ const tilel = require("tilelib");
 const decimalconv = extendContent(Block, "decimalconv", {
 	update(tile){
 		entity = tile.ent();
-    	if(tilel.isMod(tile.back()) && tilel.pointingAt(tile.back(), tile)){	
-        	if(tile.front().block().name == "bytmod-decimalconv"){
+    	if(tilel.isMod(tile.back()) && tilel.pointingAt(tile.back(), tile)){
+        	if(tile.front().block().name == this.name){
                 entity.setSignal(0);
             } else {
-                entity.setSignal(parseInt(tile.back().ent().getSignal(), 2));   
+                entity.setSignal(parseInt(tile.back().ent().getSignal(), 2));
             }
     	} else {
     		entity.setSignal(0);
@@ -15,11 +15,17 @@ const decimalconv = extendContent(Block, "decimalconv", {
             tile.front().ent().setSignal(entity.getSignal());
         }
 	},
+	generateIcons(){
+		return[
+			Core.atlas.find("bytmod-logic-base"),
+			Core.atlas.find(this.name)
+		]
+	},
 	draw(tile){
 		entity = tile.ent();
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
 		Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
-		Draw.rect(Core.atlas.find("bytmod-decimalconv"), tile.drawx(), tile.drawy(), tile.rotation()*90);
+		Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), tile.rotation()*90);
   		Draw.reset();
   	},
   	setBars(){
@@ -27,7 +33,7 @@ const decimalconv = extendContent(Block, "decimalconv", {
   		this.bars.add("signal", new Func({
 				get: function(entity){
 					return new Bar(prov(() => (Core.bundle.get("bar.signal") + ": " + entity.getSignal())), prov(() => Pal.ammo), new Floatp({get: function(){
-						return entity.getSignal();	
+						return entity.getSignal();
 					}
 				}));
 			}

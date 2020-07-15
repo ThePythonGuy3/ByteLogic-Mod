@@ -1,6 +1,6 @@
 const display = extendContent(Block, "display", {
 	draw(tile){
-		Draw.rect(Core.atlas.find("bytmod-display"), tile.drawx(), tile.drawy());
+		Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy());
         entity = tile.ent();
         var dw = 2;
         var dh = 2;
@@ -23,7 +23,7 @@ const display = extendContent(Block, "display", {
   		this.bars.add("signal", new Func({
 				get: function(entity){
 					return new Bar(prov(() => (Core.bundle.get("bar.signal") + ": " + entity.getSignal())), prov(() => Pal.ammo), new Floatp({get: function(){
-						return entity.getSignal();	
+						return entity.getSignal();
 					}
 				}));
 			}
