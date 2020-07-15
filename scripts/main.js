@@ -16,5 +16,5 @@ require("binaryconv")
 require("decimalconv")
 require("display")
 require("analyzer")
-require("signalrouter")
-//require("signalnode")
+/*require("signalrouter")
+require("signalnode")*/

@@ -1,4 +1,37 @@
 const tilel = require("tilelib");
+function tabled(tile, table){
+	entity = tile.ent();
+    var itemtable = new Table(Styles.black6);
+    var liquidtable = new Table(Styles.black6);
+    var modetable = new Table(Styles.black9);
+    table.add(modetable).fillX();
+    table.row();
+    table.add(itemtable);
+    table.row();
+    table.add(liquidtable);
+    modetable.addImageButton(Icon.box, Styles.emptyi, 40, run(() => {
+    	entity.setMode("item");
+       	tabled(tile, entity.getMode());
+    }));
+    modetable.addImageButton(Icon.liquid, Styles.emptyi, 40, run(() => {
+        entity.setMode("item");
+        tabled(tile, entity.getMode());
+    }));
+    modetable.addImageButton(Icon.power, Styles.emptyi, 40, run(() => entity.setMode("power")));
+    modetable.addImageButton(Icon.paste, Styles.emptyi, 40, run(() => entity.setMode("charge")));
+	itemtable.visible(boolp(() => entity.getMode()=="item"));
+    liquidtable.visible(boolp(() => entity.getMode()=="liquid"));
+    mode = entity.getMode();
+    if(mode == "item"){
+    	ItemSelection.buildTable(itemtable, Vars.content.items(), prov(() => entity.getValue()), cons(item => {
+        	tile.configure(item == null ? -1 : item.id);
+       	}));
+    } else if(mode == "liquid"){
+       	ItemSelection.buildTable(liquidtable, Vars.content.liquids(), prov(() => entity.getValue()), cons(item => {
+            tile.configure(item == null ? -1 : item.id);
+       	}));
+    }
+}
 const analyzer = extendContent(Block, "analyzer", {
 	update(tile){
 		entity = tile.ent();
@@ -44,23 +77,7 @@ const analyzer = extendContent(Block, "analyzer", {
 		}));
   	},
   	buildConfiguration(tile, table){
-        entity = tile.ent();
-        table.add().size(200);
-        table.addImageButton(Icon.box, Styles.clearToggleTransi, 40, run(() => entity.setMode("item")));
-        table.addImageButton(Icon.liquid, Styles.clearToggleTransi, 40, run(() => entity.setMode("liquid")));
-        table.addImageButton(Icon.power, Styles.clearToggleTransi, 40, run(() => entity.setMode("power")));
-        table.addImageButton(Icon.paste, Styles.clearToggleTransi, 40, run(() => entity.setMode("charge")));
-        table.row();
-        mode = entity.getMode();
-        if(mode == "item"){
-        	ItemSelection.buildTable(table, Vars.content.items(), prov(() => entity.getValue()), cons(item => {
-            	tile.configure(item == null ? -1 : item.id);
-        	}));
-        } else if(mode == "liquid"){
-        	ItemSelection.buildTable(table, Vars.content.liquids(), prov(() => entity.getValue()), cons(item => {
-            	tile.configure(item == null ? -1 : item.id);
-        	}));
-        }
+        tabled(tile, table);
     },
     configured(tile, player, value){
         tile.ent().setValue(Vars.content.item(value));
