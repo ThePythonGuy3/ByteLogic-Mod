@@ -14,22 +14,28 @@ const relay = extendContent(Block, "relay", {
     		entity.internalSignal(0);
     	}
 	},
+  generateIcons(){
+    return[
+      Core.atlas.find("bytmod-logic-base"),
+      Core.atlas.find(this.name)
+    ]
+  },
 	draw(tile){
 		entity = tile.ent();
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
 		Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
-		Draw.rect(Core.atlas.find("bytmod-relay"), tile.drawx(), tile.drawy(), tile.rotation()*90);
+		Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), tile.rotation()*90);
 		if(tile.getNearby(0).block().name.startsWith("bytmod") && tile.getNearby(0).rotation()*90 == 180){
-			Draw.rect(Core.atlas.find("bytmod-relay"), tile.drawx(), tile.drawy(), 0);
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 0);
 		}
 		if(tile.getNearby(2).block().name.startsWith("bytmod") && tile.getNearby(2).rotation()*90 == 0){
-			Draw.rect(Core.atlas.find("bytmod-relay"), tile.drawx(), tile.drawy(), 180);
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 180);
 		}
 		if(tile.getNearby(1).block().name.startsWith("bytmod") && tile.getNearby(1).rotation()*90 == 270){
-			Draw.rect(Core.atlas.find("bytmod-relay"), tile.drawx(), tile.drawy(), 90);
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 90);
 		}
 		if(tile.getNearby(3).block().name.startsWith("bytmod") && tile.getNearby(3).rotation()*90 == 90){
-			Draw.rect(Core.atlas.find("bytmod-relay"), tile.drawx(), tile.drawy(), 270);
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
 		}
 		Draw.reset();
 	},
@@ -38,7 +44,7 @@ const relay = extendContent(Block, "relay", {
   		this.bars.add("signal", new Func({
 				get: function(entity){
 					return new Bar(prov(() => (Core.bundle.get("bar.signal") + ": " + entity.getSignal())), prov(() => Pal.ammo), new Floatp({get: function(){
-						return entity.getSignal();	
+						return entity.getSignal();
 					}
 				}));
 			}
@@ -80,5 +86,3 @@ relay.entityType = prov(() => {
 	entity.setTempSignal(0);
 	return entity;
 });
-
-

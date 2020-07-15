@@ -17,6 +17,12 @@ const signalfont = extendContent(Block, "signalfont", {
     		}
     	}
 	},
+  generateIcons(){
+    return[
+      Core.atlas.find("bytmod-logic-base"),
+      Core.atlas.find(this.name)
+    ]
+  },
 	draw(tile){
 		entity = tile.ent();
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
@@ -29,7 +35,7 @@ const signalfont = extendContent(Block, "signalfont", {
   		this.bars.add("signal", new Func({
 				get: function(entity){
 					return new Bar(prov(() => (Core.bundle.get("bar.signal") + ": " + entity.getSignal())), prov(() => Pal.ammo), new Floatp({get: function(){
-						return entity.getSignal();	
+						return entity.getSignal();
 					}
 				}));
 			}

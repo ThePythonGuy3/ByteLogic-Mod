@@ -2,11 +2,11 @@ const tilel = require("tilelib");
 const binaryconv = extendContent(Block, "binaryconv", {
 	update(tile){
 		entity = tile.ent();
-    	if(tilel.isMod(tile.back()) && tilel.pointingAt(tile.back(), tile)){	
-        	if(tile.front().block().name == "bytmod-binaryconv"){
+    	if(tilel.isMod(tile.back()) && tilel.pointingAt(tile.back(), tile)){
+        	if(tile.front().block().name == this.name){
         		entity.setSignal(0);
         	} else {
-                entity.setSignal(tilel.dtb(tile.back().ent().getSignal()));	
+                entity.setSignal(tilel.dtb(tile.back().ent().getSignal()));
         	}
     	} else {
     		entity.setSignal(0);
@@ -15,11 +15,17 @@ const binaryconv = extendContent(Block, "binaryconv", {
             tile.front().ent().setSignal(entity.getSignal());
         }
 	},
+	generateIcons(){
+		return[
+			Core.atlas.find("bytmod-logic-base"),
+			Core.atlas.find(this.name)
+		]
+	},
 	draw(tile){
 		entity = tile.ent();
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
 		Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
-		Draw.rect(Core.atlas.find("bytmod-binaryconv"), tile.drawx(), tile.drawy(), tile.rotation()*90);
+		Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), tile.rotation()*90);
   		Draw.reset();
   	},
   	setBars(){
@@ -27,7 +33,7 @@ const binaryconv = extendContent(Block, "binaryconv", {
   		this.bars.add("signal", new Func({
 				get: function(entity){
 					return new Bar(prov(() => (Core.bundle.get("bar.signal") + ": " + entity.getSignal())), prov(() => Pal.ammo), new Floatp({get: function(){
-						return entity.getSignal();	
+						return entity.getSignal();
 					}
 				}));
 			}
