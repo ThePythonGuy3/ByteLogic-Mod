@@ -1,37 +1,28 @@
-function pointAt(x, y, rotation, cx, cy){
-    if((x-1 == cx && rotation == 2)||(x+1 == cx && rotation == 0)||(y+1 == cy && rotation == 1)||(y-1 == cy && rotation == 3)){
-        return true;
-    } else {
-        return false;
-    }
-}
+const timerid = 0;
+const tilel = require("tilelib");
 const signalrouter = extendContent(Block, "signalrouter", {
-	update(tile){
-		entity = tile.ent();
-		if(tile.right().block().name.startsWith("bytmod")&&(!(pointAt(tile.right().x, tile.right().y, tile.right().rotation(), tile.x, tile.y)))){
-			tile.right().ent().setSignal(entity.getSignal());
-		}
-		if(tile.left().block().name.startsWith("bytmod")&&(!(pointAt(tile.left().x, tile.left().y, tile.left().rotation(), tile.x, tile.y)))){
-			tile.left().ent().setSignal(entity.getSignal());
-		}
-		if(tile.front().block().name.startsWith("bytmod")&&(!(pointAt(tile.front().x, tile.front().y, tile.front().rotation(), tile.x, tile.y)))){
-			tile.front().ent().setSignal(entity.getSignal());
-		}
-		if(tile.back().block().name.startsWith("bytmod")&&(!(pointAt(tile.back().x, tile.back().y, tile.back().rotation(), tile.x, tile.y)))){
-			tile.back().ent().setSignal(entity.getSignal());
-		}
-		if(tile.right().block().name.startsWith("bytmod")&&((pointAt(tile.right().x, tile.right().y, tile.right().rotation(), tile.x, tile.y)))){
-			tile.ent().setSignal(tile.right().ent().getSignal());
-		}
-		if(tile.left().block().name.startsWith("bytmod")&&((pointAt(tile.left().x, tile.left().y, tile.left().rotation(), tile.x, tile.y)))){
-			tile.ent().setSignal(tile.left().ent().getSignal());
-		}
-		if(tile.front().block().name.startsWith("bytmod")&&((pointAt(tile.front().x, tile.front().y, tile.front().rotation(), tile.x, tile.y)))){
-			tile.ent().setSignal(tile.front().ent().getSignal());
-		}
-		if(tile.back().block().name.startsWith("bytmod")&&((pointAt(tile.back().x, tile.back().y, tile.back().rotation(), tile.x, tile.y)))){
-			tile.ent().setSignal(tile.back().ent().getSignal());
-		}
+  update(tile){
+	  entity = tile.ent();
+    tile.ent().timer.reset(timerid, 0);
+    //calculate additional stuff here with tile.ent().getSignal();
+    try{
+      //you need sth better than a try here; check if the next entity has the setSignal method.
+	  var[4] idklol = [tile.right(), tile.back(), tile.left(), tile.front()];
+	  for(int i=0;i<4;i++){
+		  if(idklol[i].block().name=="bytmod-relay" && !pointingAt(idklol[i], tile)) idklol[i].ent().setSignal(entity.getSignal());
+		  else if(idklol[i].block().name=="bytmod-display") idklol[i].ent().setSignal(entity.getSignal());
+		  else if(idklol[i].block().name=="bytmod-signalrouter" && /*check if this router is not source to prevent infinite signal passback*/) idklol[i].ent().setSignal(entity.getSignal());
+		  else if(idklol[i].block().name=="bytmod-signalfont"||idklol[i].block().name=="bytmod-switch"||idklol[i].block().name=="bytmod-analyzer") continue;
+		  else if((idklol[i].block().name=="bytmod-not"||idklol[i].block().name=="bytmod-decimalconv"||idklol[i].block().name=="bytmod-binaryconv") && pointBack(idklol[i], tile)) idklol[i].ent().setSignal(entity.getSignal());
+		  else if(pointSide(idklol[i], tile)) idklol[i].ent().setSignal(entity.getSignal());
+		  else continue;
+	  }
+    }catch(err){}
+    tile.ent().internalSignal(tile.ent().getTempSignal());
+    tile.ent().setTempSignal(0);
+    	if(entity.getSignal() == NaN){
+    		entity.internalSignal(0);
+    	}
 	},
   generateIcons(){
     return[
@@ -44,8 +35,20 @@ const signalrouter = extendContent(Block, "signalrouter", {
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
 		Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
 		Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), tile.rotation()*90);
-  		Draw.reset();
-  	},
+		if(tile.getNearby(0).block().name.startsWith("bytmod") && tile.getNearby(0).rotation()*90 == 180){
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 0);
+		}
+		if(tile.getNearby(2).block().name.startsWith("bytmod") && tile.getNearby(2).rotation()*90 == 0){
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 180);
+		}
+		if(tile.getNearby(1).block().name.startsWith("bytmod") && tile.getNearby(1).rotation()*90 == 270){
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 90);
+		}
+		if(tile.getNearby(3).block().name.startsWith("bytmod") && tile.getNearby(3).rotation()*90 == 90){
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
+		}
+		Draw.reset();
+	},
   	setBars(){
   		this.super$setBars();
   		this.bars.add("signal", new Func({
@@ -65,13 +68,31 @@ signalrouter.entityType = prov(() => {
 		getSignal: function(){
 			return this._signal;
 		},
-		setSignal: function(val){
-			this._signal = val;
+    	setSignal: function(val){
+      		//check if it should take signal(ex. adders should not accept back) here.
+      		if(this.timer.getTime(timerid)==0){
+        		this._signal += val;//relays are "add mode"
+      		} else {
+        		this._tsignal += val;
+      		}
+    	},
+		getTempSignal: function(){
+			return this._tsignal;
+		},
+		setTempSignal: function(val){
+			this._tsignal = val;
+		},
+		addTempSignal: function(val){
+			this._tsignal += val;
+		},
+		internalSignal: function(val){
+			this._signal = val;//do not call in other blocks!
 		},
 		asignal: function(){
 			return true;
 		}
 	});
-	entity.setSignal(0);
+	entity.internalSignal(0);
+	entity.setTempSignal(0);
 	return entity;
 });
