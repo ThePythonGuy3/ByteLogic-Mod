@@ -19,6 +19,12 @@ const analyzer = extendContent(Block, "analyzer", {
     		}
     	}
 	},
+	generateIcons(){
+		return[
+			Core.atlas.find("bytmod-logic-base"),
+			Core.atlas.find(this.name)
+		]
+	},
 	draw(tile){
 		entity = tile.ent();
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
