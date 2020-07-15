@@ -15,5 +15,6 @@ require("signalfont")
 require("binaryconv")
 require("decimalconv")
 require("display")
+require("analyzer")
 /*require("signalrouter")
 require("signalnode")*/
