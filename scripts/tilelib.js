@@ -11,6 +11,9 @@ module.exports = {
   pointingAt(tileCheck, tile){
 	  return this.pointAt(tileCheck.x, tileCheck.y, tileCheck.rotation(), tile.x, tile.y);
   },
+  pointInput(tileCheck, tile){
+	  return !((tileCheck.rotation()-tile.rotation())&1) && (abs(tileCheck.x-tile.x)^abs(tileCheck.y-tile.y));
+  },
   isMod(tile){
 	  return tile.block().name.startsWith("bytmod");
   },
