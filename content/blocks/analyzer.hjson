@@ -1,0 +1,11 @@
+health: 100
+name: Analyzer
+description: Gives signal depending on the quantity of the selected item in the block to be analyzed.
+update: true
+targetable: false
+rotate: true
+configurable: true
+requirements: [
+  lead/10
+]
+research: swarmer
