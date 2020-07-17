@@ -1,36 +1,51 @@
 const tilel = require("tilelib");
-function tabled(tile, table){
+function tabled(tile, tablertable, modeeee){
 	entity = tile.ent();
-    var itemtable = new Table(Styles.black6);
-    var liquidtable = new Table(Styles.black6);
+	var selecttable = new Table(Styles.black6);
+    /*var itemtable = new Table(Styles.black6);
+    var liquidtable = new Table(Styles.black6);*/
+    /*itemtable.visible(boolp(() => entity.getMode()=="item"));
+    liquidtable.visible(boolp(() => entity.getMode()=="liquid"));*/
     var modetable = new Table(Styles.black9);
-    table.add(modetable).fillX();
-    table.row();
-    table.add(itemtable);
-    table.row();
-    table.add(liquidtable);
+    tablertable.add(modetable).fillX();
+    tablertable.row();
+    /*tablertable.add(itemtable);
+    tablertable.row();
+    tablertable.add(liquidtable);*/
+
     modetable.addImageButton(Icon.box, Styles.emptyi, 40, run(() => {
     	entity.setMode("item");
-       	tabled(tile, entity.getMode());
+    	tablertable.clear();
+       	tabled(tile, tablertable, entity.getMode());
     }));
     modetable.addImageButton(Icon.liquid, Styles.emptyi, 40, run(() => {
-        entity.setMode("item");
-        tabled(tile, entity.getMode());
+        entity.setMode("liquid");
+        tablertable.clear();
+        tabled(tile, tablertable, entity.getMode());
     }));
     modetable.addImageButton(Icon.power, Styles.emptyi, 40, run(() => entity.setMode("power")));
     modetable.addImageButton(Icon.paste, Styles.emptyi, 40, run(() => entity.setMode("charge")));
-	itemtable.visible(boolp(() => entity.getMode()=="item"));
-    liquidtable.visible(boolp(() => entity.getMode()=="liquid"));
-    mode = entity.getMode();
-    if(mode == "item"){
-    	ItemSelection.buildTable(itemtable, Vars.content.items(), prov(() => entity.getValue()), cons(item => {
-        	tile.configure(item == null ? -1 : item.id);
-       	}));
-    } else if(mode == "liquid"){
-       	ItemSelection.buildTable(liquidtable, Vars.content.liquids(), prov(() => entity.getValue()), cons(item => {
-            tile.configure(item == null ? -1 : item.id);
-       	}));
+	switch(entity.getMode()){
+    	case "item":
+    		entity = tile.ent();
+    		ItemSelection.buildTable(selecttable, Vars.content.items(), prov(() => entity.getValue()), cons(item => {
+        		tile.configure(item == null ? -1 : item.id);
+       		}));
+       		break;
+       	case "liquid":
+       		entity = tile.ent();
+       		ItemSelection.buildTable(selecttable, Vars.content.liquids(), prov(() => entity.getValue()), cons(item => {
+            	tile.configure(item == null ? -1 : item.id);
+       		}));
+       		break;
     }
+    tablertable.add(selecttable).fillX();
+	/*mode = entity.getMode();
+    if(mode == "item"){
+    	
+    } else if(mode == "liquid"){
+       	
+    }*/
 }
 const analyzer = extendContent(Block, "analyzer", {
 	update(tile){
@@ -44,6 +59,14 @@ const analyzer = extendContent(Block, "analyzer", {
 			liquid = entity.getValue();
 			if(tile.back().block().hasLiquids){
             	entity.setSignal(liquid == null ? tile.back().ent().liquids.total() : tile.back().ent().liquids.get(liquid));
+			}
+		} else if(entity.getMode() == "power"){
+			if(tile.back().block().hasPower){
+				entity.setSignal(Mathf.round(tile.back().ent().power.graph.getPowerBalance()*60));
+			}
+		} else if(entity.getMode() == "charge"){
+			if(tile.back().block().hasPower){
+				entity.setSignal(Mathf.round(tile.back().ent().power.graph.getBatteryStored()));
 			}
 		}
 		if(tilel.isMod(tile.front()) && !(tilel.pointingAt(tile.front(), tile))){
@@ -77,7 +100,7 @@ const analyzer = extendContent(Block, "analyzer", {
 		}));
   	},
   	buildConfiguration(tile, table){
-        tabled(tile, table);
+        tabled(tile, table, entity.getMode());
     },
     configured(tile, player, value){
         tile.ent().setValue(Vars.content.item(value));
