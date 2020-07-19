@@ -12,7 +12,7 @@ const signalnode = extendContent(Block, "signalnode", {
 	draw(tile){
 		entity = tile.ent();
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
-		Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
+		//Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
 		Draw.rect(Core.atlas.find("bytmod-signalfont"), tile.drawx(), tile.drawy(), tile.rotation()*90);
   		Draw.reset();
   	},
