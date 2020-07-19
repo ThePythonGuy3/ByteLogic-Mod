@@ -28,8 +28,12 @@ const signalnode = extendContent(Block, "signalnode", {
 		}));
   	}, 
 	onConfigureTileTapped(other){
-		Draw.rect(Core.atlas.find("router"), other.x,other.y);
-	}
+		//Draw.rect(Core.atlas.find("router"), other.x,other.y);
+		if(other.name == "bytmod-signalnode"){
+			if(other.ent().getio() == "in"){
+				other.ent.setio("out");
+				
+}
 });
 signalnode.category = Category.power;
 signalnode.size = 1;
@@ -43,7 +47,14 @@ signalnode.entityType = prov(() => {
 		},
 		asignal: function(){
 			return false;
-		}
+		},
+		setio: function(val){
+			this._inpout = val;
+		}, 
+		getio: function(){
+			return this._inpout;
+		},
+		tilset: function
 	});
 	entity.setSignal(0);
 	return entity;
