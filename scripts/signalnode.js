@@ -1,20 +1,7 @@
-function pointAt(x, y, rotation, cx, cy){
-    if((x-1 == cx && rotation == 2)||(x+1 == cx && rotation == 0)||(y+1 == cy && rotation == 1)||(y-1 == cy && rotation == 3)){
-        return true;
-    } else {
-        return false;
-    }
-}
-const signalfont = extendContent(Block, "signalfont", {
+const tilel = require("tilelib");
+const signalnode = extendContent(Block, "signalnode", {
 	update(tile){
-		entity = tile.ent();
-    	if(tile.front().block().name.startsWith("bytmod") && tile.front().ent().asignal() == true){
-    		if(tile.front().block().name == "bytmod-relay"){
-    			tile.front().ent().setTempSignal(entity.getSignal());
-    		} else {
-    			tile.front().ent().setSignal(entity.getSignal());
-    		}
-    	}
+		entity = tile.entity()
 	},
   generateIcons(){
     return[
@@ -39,17 +26,14 @@ const signalfont = extendContent(Block, "signalfont", {
 				}));
 			}
 		}));
-  	},
-  	tapped(tile, player){
-  		entity = tile.ent();
-        Vars.ui.showTextInput(Core.bundle.get("bar.signal"), "", 8, entity.getSignal(), true, cons(result => {
-            entity.setSignal(Strings.parseInt(result, 0));
-        }));
-    }
+  	}, 
+	onConfigureTileTapped(other){
+		Draw.rect(Core.atlas.find("router"), other.x,other.y);
+	}
 });
-signalfont.category = Category.power;
-signalfont.size = 1;
-signalfont.entityType = prov(() => {
+signalnode.category = Category.power;
+signalnode.size = 1;
+signalnide.entityType = prov(() => {
 	const entity = extend(TileEntity, {
 		getSignal: function(){
 			return this._signal;
@@ -57,17 +41,10 @@ signalfont.entityType = prov(() => {
 		setSignal: function(val){
 			this._signal = val;
 		},
-		asignal: function(){
-			return false;
-		},
-		ioread: function(val){
-			return this._io;
-		},
-		ioset: function(val){
-			this._io = val;
+		asignal: function(val = false){
+			return val;
 		}
 	});
 	entity.setSignal(0);
-	entity.inset(true);
 	return entity;
 });
