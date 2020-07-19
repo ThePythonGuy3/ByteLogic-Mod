@@ -41,8 +41,8 @@ signalnide.entityType = prov(() => {
 		setSignal: function(val){
 			this._signal = val;
 		},
-		asignal: function(val = false){
-			return val;
+		asignal: function(){
+			return false;
 		}
 	});
 	entity.setSignal(0);
