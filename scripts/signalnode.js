@@ -27,11 +27,14 @@ const signalnode = extendContent(Block, "signalnode", {
 			}
 		}));
   	}, 
-	onConfigureTileTapped(other){
+	onConfigureTileTapped(tile, other){
 		//Draw.rect(Core.atlas.find("router"), other.x,other.y);
 		if(other.name == "bytmod-signalnode"){
 			if(other.ent().getio() == "in"){
-				other.ent.setio("out");
+				other.ent().setio("out");
+				tile.ent().tilset(other);
+			}
+		} 
 				
 }
 });
@@ -54,7 +57,12 @@ signalnode.entityType = prov(() => {
 		getio: function(){
 			return this._inpout;
 		},
-		tilset: function
+		tilset: function(val){
+			this._tilsetted = val;
+		}, 
+		tilget: function(){
+			return this._tilsetted;
+		}
 	});
 	entity.setSignal(0);
 	return entity;
