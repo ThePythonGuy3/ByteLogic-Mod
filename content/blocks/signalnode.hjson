@@ -4,7 +4,6 @@ description: Transfers signal over the distance
 update: true
 targetable: false
 configurable: true
-posConfig: true
 layer: power
 rotate: false
 requirements: [
