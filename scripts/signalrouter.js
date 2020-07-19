@@ -41,9 +41,9 @@ if(tilel.isMod(tile.left()) && tile.left().ent().asignal() == true && !tilel.poi
 		}));
   	}
 });
-adder.category = Category.power;
-adder.size = 1;
-adder.entityType = prov(() => {
+signalrouter.category = Category.power;
+signalrouter.size = 1;
+signalrouter.entityType = prov(() => {
 	const entity = extend(TileEntity, {
 		getSignal: function(){
 			return this._signal;
