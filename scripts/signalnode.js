@@ -1,7 +1,7 @@
 const tilel = require("tilelib");
 const signalnode = extendContent(Block, "signalnode", {
 	update(tile){
-		entity = tile.entity()
+		entity = tile.ent()
 	},
   generateIcons(){
     return[
