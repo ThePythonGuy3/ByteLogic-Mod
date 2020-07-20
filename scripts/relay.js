@@ -35,7 +35,7 @@ const relay = extendContent(Block, "relay", {
 		if(tilel.isMod(tile.back()) && tilel.pointingAt(tile.back(), tile)){
 			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 90);
 		}
-		if(tilel.isMod(tile.front()) && tilel.pointingAt(tile.front()), tile)){
+		if(tilel.isMod(tile.front()) && tilel.pointingAt(tile.front(), tile)){
 			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
 		}
 		Draw.reset();
