@@ -13,7 +13,7 @@ const signalnode = extendContent(Block, "signalnode", {
 		entity = tile.ent();
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
 		Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
-		Draw.rect(Core.atlas.find("bytmod-signalfont"), tile.drawx(), tile.drawy(), tile.rotation()*90);
+		Draw.rect(Core.atlas.find("bytmod-signalnode"), tile.drawx(), tile.drawy(), tile.rotation()*90);
   		Draw.reset();
   	},
   	setBars(){
@@ -27,13 +27,10 @@ const signalnode = extendContent(Block, "signalnode", {
 			}
 		}));
   	}, 
-	onConfigureTileTapped(tile, other){
+	onConfigureTileTapped(other){
 		//Draw.rect(Core.atlas.find("router"), other.x,other.y);
 		if(other.name == "bytmod-signalnode"){
-			if(other.ent().getio() == "in"){
-				other.ent().setio("out");
-				tile.ent().tilset(other);
-			}
+			Vars.control.pause();
 		} 
 				
 }
