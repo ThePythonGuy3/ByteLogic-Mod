@@ -46,7 +46,7 @@ const signalnode = extendContent(Block, "signalnode", {
 		if(tile == other){
 			tile.configure(other.pos());
 			return false;
-		} else if(other.name == "bytmod-signalnode"){
+		} else if(other.block().hasItems){
 			tile.configure(other.pos());
 			return false;	
 		} else return true;
@@ -80,7 +80,7 @@ const signalnode = extendContent(Block, "signalnode", {
 		Lines.circle(tile.drawx(),tile.drawy(),10);
 		Draw.color(Pal.accent);
 		Lines.circle(tile.drawx(),tile.drawy(),50);
-		Lines.polySeg(9, 0, 360, tile.drawx(), tile.drawy(), 50, Mathf.sinDeg(Time.time())*30);
+		Lines.polySeg(12, 0, 360, tile.drawx(), tile.drawy(), 50, Mathf.sinDeg(Time.time())*30);
 		Lines.stroke(1);
 		Draw.reset();
 	}, 
