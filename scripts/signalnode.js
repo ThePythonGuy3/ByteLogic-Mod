@@ -1,5 +1,9 @@
 const tilel = require("tilelib");
 const signalnode = extendContent(Block, "signalnode", {
+	load(){
+		this.laser = Core.atlas.find("laser");
+		this.laserEnd = Core.atlas.find("laser-end");
+	},
 	update(tile){
 		entity = tile.ent()
 	},
