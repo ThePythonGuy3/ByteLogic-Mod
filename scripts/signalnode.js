@@ -36,34 +36,34 @@ const signalnode = extendContent(Block, "signalnode", {
 		if(tile == other){
 			tile.configure(other.pos());
 			return false;
-		} else if(other.block().hasItems){
+		} else if(other.name == "bytmod-signalnode"){
 			tile.configure(other.pos());
 			return false; 
 		} else return true;
 				
 	},
 	drawLaser(tile,target){
-    var opacityPercentage = Core.settings.getInt("lasersopacity");
-    if(opacityPercentage == 0) return;
-    var opacity = opacityPercentage / 100;
+   		var opacityPercentage = Core.settings.getInt("lasersopacity");
+   		if(opacityPercentage == 0) return;
+   		var opacity = opacityPercentage / 100;
 
-    var x1 = tile.drawx(); var y1 = tile.drawy();
-    var x2 = target.drawx(); var y2 = target.drawy();
+   		var x1 = tile.drawx(); var y1 = tile.drawy();
+   		var x2 = target.drawx(); var y2 = target.drawy();
 
-    var angle1 = Angles.angle(x1, y1, x2, y2);
-    this.t1.trns(angle1, tile.block().size * Vars.tilesize / 2 - 1.5);
-    this.t2.trns(angle1 + 180, target.block().size * Vars.tilesize / 2 - 1.5);
+   		var angle1 = Angles.angle(x1, y1, x2, y2);
+   		this.t1.trns(angle1, tile.block().size * Vars.tilesize / 2 - 1.5);
+   		this.t2.trns(angle1 + 180, target.block().size * Vars.tilesize / 2 - 1.5);
 
-    x1 += this.t1.x;
-    y1 += this.t1.y;
-    x2 += this.t2.x;
-    y2 += this.t2.y;
+   		x1 += this.t1.x;
+   		y1 += this.t1.y;
+   		x2 += this.t2.x;
+   		y2 += this.t2.y;
 
-    Draw.color(tile.ent().getSignal()>0?Pal.accent:Color.valueOf("ffffff"));
-    Draw.alpha(opacity);
-    Drawf.laser(this.laser, this.laserEnd, x1, y1, x2, y2, 0.25);
-    Draw.reset();
-  }, 
+   		Draw.color(tile.ent().getSignal()>0?Pal.accent:Color.valueOf("ffffff"));
+   		Draw.alpha(opacity);
+   		Drawf.laser(this.laser, this.laserEnd, x1, y1, x2, y2, 0.25);
+   		Draw.reset();
+ 	}, 
 	drawConfigure(tile){
 		Draw.color(Color.royal);
 		Lines.stroke(2);
@@ -71,7 +71,16 @@ const signalnode = extendContent(Block, "signalnode", {
 		Draw.color(Pal.accent);
 		Lines.circle(tile.drawx(),tile.drawy(),50);
 		Lines.stroke(1);
-		Lines.polySeg(12, 0, 360, tile.drawx(), tile.drawy(), 50, Time.time());
+		Lines.polySeg(9, 0, 360, tile.drawx(), tile.drawy(), 50, Time.time());
+	}, 
+	drawLayer(tile){
+		if(Core.settings.getInt("lasersopacity") == 0) return;
+   		if(!tile.ent().getConnected()) return;
+   		var link=Vars.world.tile(tile.ent().getConf());
+   		if(link!=null&&link.block().hasItems){
+     			this.drawLaser(tile, link);
+     			Draw.reset();
+   		}
 	}
 });
 signalnode.category = Category.power;
@@ -88,11 +97,18 @@ signalnode.entityType = prov(() => {
 			return false;
 		},
 		setio: function(val){
-			this._inpout = val;
-		}, 
+			this._isio = val;
+		},
 		getio: function(){
-			return this._inpout;
+			return this._isio;
+		},
+		setTileConf: function(val){
+			this._tileconf = val
+		}, 
+		getTileConf: function(){
+			return this._tileconf;
 		}
+
 	});
 	entity.setSignal(0);
 	return entity;
