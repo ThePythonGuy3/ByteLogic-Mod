@@ -90,7 +90,7 @@ const signalnode = extendContent(Block, "signalnode", {
 	drawLayer(tile){
 		if(Core.settings.getInt("lasersopacity") == 0) return;
    		if(!tile.ent().getConn()) return;
-   		var link=Vars.world.tile(tile.ent().getTileConf().pos());
+   		var link=tile.ent().getTileConf().pos();
    		if(link!=null&&link.block().hasItems){
      			this.drawLaser(tile, link);
      			Draw.reset();
