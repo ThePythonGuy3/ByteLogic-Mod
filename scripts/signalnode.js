@@ -3,12 +3,12 @@ const signalnode = extendContent(Block, "signalnode", {
 	update(tile){
 		entity = tile.ent()
 	},
-  generateIcons(){
-    return[
-      Core.atlas.find("bytmod-logic-base"),
-      Core.atlas.find(this.name)
-    ]
-  },
+ 	generateIcons(){
+   		return[
+     			Core.atlas.find("bytmod-logic-base"),
+     			Core.atlas.find(this.name)
+   		]
+ 	},
 	draw(tile){
 		entity = tile.ent();
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
@@ -38,7 +38,7 @@ const signalnode = extendContent(Block, "signalnode", {
 			return false;
 		} else if(other.name == "bytmod-signalnode"){
 			tile.configure(other.pos());
-			return false; 
+			return false;	
 		} else return true;
 				
 	},
@@ -75,8 +75,8 @@ const signalnode = extendContent(Block, "signalnode", {
 	}, 
 	drawLayer(tile){
 		if(Core.settings.getInt("lasersopacity") == 0) return;
-   		if(!tile.ent().getConnected()) return;
-   		var link=Vars.world.tile(tile.ent().getConf());
+   		if(tile.ent().getTileConf() == null) return;
+   		var link=Vars.world.tile(tile.ent().getTileConf());
    		if(link!=null&&link.block().hasItems){
      			this.drawLaser(tile, link);
      			Draw.reset();
