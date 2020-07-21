@@ -9,7 +9,9 @@ module.exports = {
     }
   },
   pointingAt(tileCheck, tile){
-	 	return this.pointAt(tileCheck.x, tileCheck.y, tileCheck.rotation(), tile.x, tile.y);
+		if(tileCheck.block().rotate){
+	 		return this.pointAt(tileCheck.x, tileCheck.y, tileCheck.rotation(), tile.x, tile.y);
+		} else return false;
   },
   pointSide(tileCheck, tile){
 	  //return !((tileCheck.rotation()-tile.rotation())&1) && (abs(tileCheck.x-tile.x)==1?!abs(tileCheck.y-tile.y)==1:abs(tileCheck.y-tile.y)==1);
