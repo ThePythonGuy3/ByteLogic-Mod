@@ -36,7 +36,7 @@ const signalnode = extendContent(Block, "signalnode", {
 	configured(tile, player, value){
 		if(value<=0) return;
 		var other = Vars.world.tile(value);
-		if(tile==other) tile.ent().setTileConf(null);
+		if(tile==other) tile.ent().setConn(false);
    		else if(tile.ent().getTileConf()==other&&tile.ent().getConn()) tile.ent().setConn(false);
    		else if(other.block().hasItems&&other.block()!=tile.block()){
      			tile.ent().setConn(true);
