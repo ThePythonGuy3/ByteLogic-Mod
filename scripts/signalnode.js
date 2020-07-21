@@ -30,9 +30,6 @@ const signalnode = extendContent(Block, "signalnode", {
 	configured(tile, player, value){
 		if(value<=0) return;
 		var other = Vars.world.tile(value);
-		Draw.color(Color.coral);
-		Drawf.laser(tile.team, Core.atlas.find("router"),Core.atlas.find("sorter"),tile.drawx(),tile.drawy(),other.drawx(),other.drawy());
-		Draw.reset();
 	}, 
 	onConfigureTileTapped(tile, other){
 		//Draw.rect(Core.atlas.find("router"), other.x,other.y);
@@ -44,6 +41,37 @@ const signalnode = extendContent(Block, "signalnode", {
 			return false; 
 		} else return true;
 				
+	},
+	drawLaser(tile,target){
+    var opacityPercentage = Core.settings.getInt("lasersopacity");
+    if(opacityPercentage == 0) return;
+    var opacity = opacityPercentage / 100;
+
+    var x1 = tile.drawx(); var y1 = tile.drawy();
+    var x2 = target.drawx(); var y2 = target.drawy();
+
+    var angle1 = Angles.angle(x1, y1, x2, y2);
+    this.t1.trns(angle1, tile.block().size * Vars.tilesize / 2 - 1.5);
+    this.t2.trns(angle1 + 180, target.block().size * Vars.tilesize / 2 - 1.5);
+
+    x1 += this.t1.x;
+    y1 += this.t1.y;
+    x2 += this.t2.x;
+    y2 += this.t2.y;
+
+    Draw.color(tile.ent().getSignal()>0?Pal.accent:Color.valueOf("ffffff"));
+    Draw.alpha(opacity);
+    Drawf.laser(this.laser, this.laserEnd, x1, y1, x2, y2, 0.25);
+    Draw.reset();
+  }, 
+	drawConfigure(tile){
+		Draw.color(Color.royal);
+		Lines.stroke(2);
+		Lines.circle(tile.drawx(),tile.drawy(),10);
+		Draw.color(Pal.accent);
+		Lines.circle(tile.drawx(),tile.drawy(),50);
+		Lines.stroke(1);
+		Lines.polySeg(12, 0, 360, tile.drawx(), tile.drawy(), 50, Time.time());
 	}
 });
 signalnode.category = Category.power;
