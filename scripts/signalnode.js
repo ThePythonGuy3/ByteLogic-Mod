@@ -34,6 +34,12 @@ const signalnode = extendContent(Block, "signalnode", {
 	configured(tile, player, value){
 		if(value<=0) return;
 		var other = Vars.world.tile(value);
+		if(tile==other) tile.ent().setTileConf(null);
+   		else if(tile.ent().getTileConf()==other&&tile.ent().getConn()) tile.ent().setConn(false);
+   		else if(other.block().hasItems&&other.block()!=tile.block()){
+     			tile.ent().setConf(value,tile);
+     			tile.ent().setConnected(true);
+   		} 
 	}, 
 	onConfigureTileTapped(tile, other){
 		//Draw.rect(Core.atlas.find("router"), other.x,other.y);
@@ -74,13 +80,14 @@ const signalnode = extendContent(Block, "signalnode", {
 		Lines.circle(tile.drawx(),tile.drawy(),10);
 		Draw.color(Pal.accent);
 		Lines.circle(tile.drawx(),tile.drawy(),50);
+		Lines.polySeg(9, 0, 360, tile.drawx(), tile.drawy(), 50, Mathf.sinDeg(Time.time())*30);
 		Lines.stroke(1);
-		Lines.polySeg(9, 0, 360, tile.drawx(), tile.drawy(), 50, Time.time());
+		Draw.reset();
 	}, 
 	drawLayer(tile){
 		if(Core.settings.getInt("lasersopacity") == 0) return;
-   		if(tile.ent().getTileConf() == null) return;
-   		var link=Vars.world.tile(tile.ent().getTileConf());
+   		if(!tile.ent().getConn()) return;
+   		var link=Vars.world.tile(tile.ent().getTileConf().pos());
    		if(link!=null&&link.block().hasItems){
      			this.drawLaser(tile, link);
      			Draw.reset();
@@ -97,8 +104,11 @@ signalnode.entityType = prov(() => {
 		setSignal: function(val){
 			this._signal = val;
 		},
+		setAsignal: function(val){
+			this._asi = val
+		},
 		asignal: function(){
-			return false;
+			return this._asi;
 		},
 		setio: function(val){
 			this._isio = val;
@@ -111,9 +121,18 @@ signalnode.entityType = prov(() => {
 		}, 
 		getTileConf: function(){
 			return this._tileconf;
+		},
+		setConn: function(val){
+			this._iscon = val;
+		},
+		getConn: function(){
+			return this._iscon;
 		}
 
 	});
 	entity.setSignal(0);
+	entity.setio(true);
+	entity.setAsignal(entity.getio());
+	entity.setConn(false);
 	return entity;
 });
