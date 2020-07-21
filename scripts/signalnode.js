@@ -75,14 +75,17 @@ const signalnode = extendContent(Block, "signalnode", {
    		Draw.reset();
  	}, 
 	drawConfigure(tile){
-		Draw.color(Color.royal);
-		Lines.stroke(2);
-		Lines.circle(tile.drawx(),tile.drawy(),10);
 		Draw.color(Pal.accent);
+		Lines.stroke(2);
+		Lines.circle(tile.drawx(),tile.drawy(),Mathf.sinDeg(Time.time()*6)+7);
+		Lines.stroke(3);
+		Draw.color(Color.coral);
 		Lines.circle(tile.drawx(),tile.drawy(),50);
-		Lines.polySeg(12, 0, 360, tile.drawx(), tile.drawy(), 50, Mathf.sinDeg(Time.time())*30);
+		Draw.color(Pal.accent);
+		Lines.stroke(2);
+		Lines.circle(tile.drawx(),tile.drawy(),50);
 		Lines.stroke(1);
-		Draw.reset();
+		Draw.reset(); 
 	}, 
 	drawLayer(tile){
 		if(Core.settings.getInt("lasersopacity") == 0) return;
