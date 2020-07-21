@@ -9,14 +9,8 @@ module.exports = {
     }
   },
   pointingAt(tileCheck, tile){
-          if(tileCheck.block().rotate){
 	 	return this.pointAt(tileCheck.x, tileCheck.y, tileCheck.rotation(), tile.x, tile.y);
-	} else {
-		if((tileCheck.x-1 == tile.x)||(tileCheck.x+1 == tile.x)||(tileCheck.y+1 == tile.y)||(tileCheck.y-1 == tile.y)){
-			return true;
-		} else return false;
-	}
-},
+  },
   pointSide(tileCheck, tile){
 	  //return !((tileCheck.rotation()-tile.rotation())&1) && (abs(tileCheck.x-tile.x)==1?!abs(tileCheck.y-tile.y)==1:abs(tileCheck.y-tile.y)==1);
 	  return (abs(tileCheck.x-tile.x)==1 && tileCheck.rotation()&1)||(abs(tileCheck.y-tile.y)==1 && !(tileCheck.rotation()&1));
