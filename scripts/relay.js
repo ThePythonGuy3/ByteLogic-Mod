@@ -26,18 +26,26 @@ const relay = extendContent(Block, "relay", {
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy());
 		Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
 		Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), tile.rotation()*90);
-		if(tilel.isMod(tile.left()) && tilel.pointingAt(tile.left(), tile)){
-			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 0);
-		}
-		if(tilel.isMod(tile.right()) && tilel.pointingAt(tile.right(), tile)){
-			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 180);
-		}
-		if(tilel.isMod(tile.back()) && tilel.pointingAt(tile.back(), tile)){
-			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 90);
-		}
-		if(tilel.isMod(tile.front()) && tilel.pointingAt(tile.front(), tile)){
-			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
-		}
+		if(tile.left().block().rotate){
+			if(tilel.isMod(tile.left()) && tilel.pointingAt(tile.left(), tile)){
+				Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
+			}
+		} else Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
+		if(tile.right().block().rotate){ 
+			if(tilel.isMod(tile.right()) && tilel.pointingAt(tile.right(), tile)){
+				Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 90);
+			}
+		} else Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 90);
+		if(tile.back().block().rotate){
+			if(tilel.isMod(tile.back()) && tilel.pointingAt(tile.back(), tile)){
+				Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 0);
+			}
+		} else Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
+		if(tile.back().block().rotate){
+			if(tilel.isMod(tile.front()) && tilel.pointingAt(tile.front(), tile)){
+				Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 180);
+			}
+		} else Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
 		Draw.reset();
 	},
   	setBars(){
