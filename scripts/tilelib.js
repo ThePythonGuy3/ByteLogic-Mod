@@ -9,7 +9,7 @@ module.exports = {
     }
   },
   pointingAt(tileCheck, tile){
-		if(tileCheck.block().rotate){
+		if(tileCheck.block().rotate && tileCheck.block().name.startsWith("bytmod")){
 	 		return this.pointAt(tileCheck.x, tileCheck.y, tileCheck.rotation(), tile.x, tile.y);
 		} else return false;
   },
