@@ -37,8 +37,8 @@ const signalnode = extendContent(Block, "signalnode", {
 		if(tile==other) tile.ent().setTileConf(null);
    		else if(tile.ent().getTileConf()==other&&tile.ent().getConn()) tile.ent().setConn(false);
    		else if(other.block().hasItems&&other.block()!=tile.block()){
-     			tile.ent().setConf(value,tile);
-     			tile.ent().setConnected(true);
+     			tile.ent().setConn(true);
+     			tile.ent().setTileConf(value);
    		} 
 	}, 
 	onConfigureTileTapped(tile, other){
