@@ -30,22 +30,22 @@ const relay = extendContent(Block, "relay", {
 			if(tilel.isMod(tile.left()) && tilel.pointingAt(tile.left(), tile)){
 				Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
 			}
-		} else Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
+		} else if(tilel.isMod(tile.left())) Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
 		if(tile.right().block().rotate){ 
 			if(tilel.isMod(tile.right()) && tilel.pointingAt(tile.right(), tile)){
 				Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 90);
 			}
-		} else Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 90);
+		} else if(tilel.isMod(tile.right())) Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 90);
 		if(tile.back().block().rotate){
 			if(tilel.isMod(tile.back()) && tilel.pointingAt(tile.back(), tile)){
 				Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 0);
 			}
-		} else Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
+		} else if(tilel.isMod(tile.back()))Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
 		if(tile.back().block().rotate){
 			if(tilel.isMod(tile.front()) && tilel.pointingAt(tile.front(), tile)){
 				Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 180);
 			}
-		} else Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
+		} else if(tilel.isMod(tile.front()))Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 180);
 		Draw.reset();
 	},
   	setBars(){
