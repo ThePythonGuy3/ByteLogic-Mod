@@ -26,12 +26,19 @@ const signalnode = extendContent(Block, "signalnode", {
 				}));
 			}
 		}));
-  	}, 
-	onConfigureTileTapped(other){
+  	},
+	configured(tile, player, value){
+		if(value<=0) return;
+		var other = Vars.world.tile(value);
+		Draw.color(Color.coral);
+		Drawf.laser(tile.team, Core.atlas.find("router"),Core.atlas.find("sorter"),tile.drawx(),tile.drawy(),other.drawx(),other.drawy());
+		Draw.reset();
+	}, 
+	onConfigureTileTapped(tile, other){
 		//Draw.rect(Core.atlas.find("router"), other.x,other.y);
 		if(other.name == "bytmod-signalnode"){
-			Vars.control.pause();
-		} 
+			tile.configure(other.pos());
+		}
 				
 }
 });
@@ -53,12 +60,6 @@ signalnode.entityType = prov(() => {
 		}, 
 		getio: function(){
 			return this._inpout;
-		},
-		tilset: function(val){
-			this._tilsetted = val;
-		}, 
-		tilget: function(){
-			return this._tilsetted;
 		}
 	});
 	entity.setSignal(0);
