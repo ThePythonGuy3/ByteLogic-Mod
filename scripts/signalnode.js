@@ -36,11 +36,15 @@ const signalnode = extendContent(Block, "signalnode", {
 	}, 
 	onConfigureTileTapped(tile, other){
 		//Draw.rect(Core.atlas.find("router"), other.x,other.y);
-		if(other.name == "bytmod-signalnode"){
+		if(tile == other){
 			tile.configure(other.pos());
-		}
+			return false;
+		} else if(other.block().hasItems){
+			tile.configure(other.pos());
+			return false; 
+		} else return true;
 				
-}
+	}
 });
 signalnode.category = Category.power;
 signalnode.size = 1;
