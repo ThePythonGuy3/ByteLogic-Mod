@@ -5,6 +5,7 @@ update: true
 targetable: false
 configurable: true
 layer: power
+sync: true
 rotate: false
 requirements: [
   lead/10
