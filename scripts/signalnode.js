@@ -81,6 +81,11 @@ const signalnode = extendContent(Block, "signalnode", {
 		Lines.stroke(2);
 		Lines.circle(tile.drawx(),tile.drawy(),Mathf.sinDeg(Time.time()*6)+7);
 		Lines.stroke(3);
+		if(tile.ent().getConn()){
+			Draw.color(Color.royal);
+			var tule = Vars.world.tile(tile.ent().getTileConf());
+			Lines.square(tule.drawx(),tule.drawy(),7,45);
+		}
 		Draw.color(Color.coral);
 		Lines.circle(tile.drawx(),tile.drawy(),50);
 		Draw.color(Pal.accent);
