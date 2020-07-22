@@ -14,7 +14,7 @@ const signalnode = extendContent(Block, "signalnode", {
 			conntile.ent().setConn(false);
 			conntile.ent().setSignal(entity.getSignal());
 		}
-		if(tile.ent().asignal() == false){
+		/*if(tile.ent().asignal() == false){
 		if(tilel.isMod(tile.front()) && tile.front().ent().asignal() == true && !tilel.pointingAt(tile.front(), tile)){
            		tile.front().ent().setSignal(entity.getSignal());
        		}
@@ -27,7 +27,7 @@ const signalnode = extendContent(Block, "signalnode", {
 		if(tilel.isMod(tile.left()) && tile.left().ent().asignal() == true && !tilel.pointingAt(tile.left(), tile)){
            		tile.left().ent().setSignal(entity.getSignal());
        		}
-		}
+		}*/
 	},
  	generateIcons(){
    		return[
