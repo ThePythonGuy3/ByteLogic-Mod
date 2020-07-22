@@ -6,9 +6,6 @@ const signalnode = extendContent(Block, "signalnode", {
 		this.laserEnd = Core.atlas.find("bytmod-logic-laser-end");
 		this.t1=new Vec2(); this.t2=new Vec2();
 	},
-	isLinkValid(tile, other){
-		return other != null && other.ent() != null && other.block().name == "bytmod-signalnode" && Mathf.within(tile.drawx(), tile.drawy(), other.drawx(), other.drawy(), 20) && other.getTeam() == tile.getTeam();
-	},
 	update(tile){
 		entity = tile.ent();
 		entity.setAsignal(entity.getConn()?false:true);
@@ -69,19 +66,16 @@ const signalnode = extendContent(Block, "signalnode", {
 	}, 
 	onConfigureTileTapped(tile, other){
 		//Draw.rect(Core.atlas.find("router"), other.x,other.y);
-		/*if(tile == other){
+		if(tile == other){
 			tile.configure(other.pos());
 			return false;
-		} else if(tile.getConn()&&other == Vars.world.tile(tile.ent().getTileConf())){
+		/*} else if(tile.getConn()&&other == Vars.world.tile(tile.ent().getTileConf())){
 			tile.configure(tile.pos());
+			return false;*/
+		} else if(other.block().name == "bytmod-signalnode"&&Mathf.within(tile.drawx(), tile.drawy(), other.drawx(), other.drawy(),100)){
+			tile.configure(other.pos());
 			return false;
-		} else if(other.block().name == "bytmod-signalnode"){
-			tile.configure(other.pos());
-			return false;	
-		} else return true;*/
-		if(isLinkValid(tile, other)){
-			tile.configure(other.pos());
-		}
+		} else return true;
 	},
 	drawLaser(tile,target){
    		var opacityPercentage = Core.settings.getInt("lasersopacity");
@@ -115,10 +109,10 @@ const signalnode = extendContent(Block, "signalnode", {
 		Lines.circle(tile.drawx(),tile.drawy(),Mathf.sinDeg(Time.time()*6)+7);
 		Lines.stroke(3);
 		Draw.color(Color.coral);
-		Lines.circle(tile.drawx(),tile.drawy(),50);
+		Lines.circle(tile.drawx(),tile.drawy(),100);
 		Draw.color(Pal.accent);
 		Lines.stroke(2);
-		Lines.circle(tile.drawx(),tile.drawy(),50);
+		Lines.circle(tile.drawx(),tile.drawy(),100);
 		Lines.stroke(1);
 		Draw.reset(); 
 	}, 
