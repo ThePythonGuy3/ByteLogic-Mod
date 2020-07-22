@@ -73,7 +73,7 @@ const signalnode = extendContent(Block, "signalnode", {
 			return false;	
 		} else return true;*/
 		if(isLinkValid(tile, other)){
-			tile.configure(Vars.world.tile(tile.ent().getTileConf()) == other ? Vars.world.tile(tile.pos()).pos() : other.pos());
+			tile.configure(Vars.world.tile(tile.ent().getTileConf()) == other ? Pos.invalid : other.pos());
 		}
 	},
 	drawLaser(tile,target){
