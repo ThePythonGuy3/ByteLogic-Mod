@@ -53,6 +53,10 @@ const signalnode = extendContent(Block, "signalnode", {
   	},
 	configured(tile, player, value){
 		if(value<=0) return;
+		if(value == Pos.invalid){
+			tile.ent().setConn(false);
+			return;
+		}
 		var other = Vars.world.tile(value);
 		if(tile==other) tile.ent().setConn(false);
    		else if(other.block().name == "bytmod-signalnode"){
