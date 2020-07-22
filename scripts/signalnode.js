@@ -6,6 +6,9 @@ const signalnode = extendContent(Block, "signalnode", {
 		this.laserEnd = Core.atlas.find("bytmod-logic-laser-end");
 		this.t1=new Vec2(); this.t2=new Vec2();
 	},
+	isLinkValid(tile, other){
+		return other != null && other.ent() != null && other.block().name == "bytmod-signalnode" && Mathf.within(tile.drawx(), tile.drawy(), other.drawx(), other.drawy(), 20) && other.getTeam() == tile.getTeam();
+	},
 	update(tile){
 		entity = tile.ent();
 		entity.setAsignal(entity.getConn()?false:true);
@@ -127,9 +130,6 @@ const signalnode = extendContent(Block, "signalnode", {
      			this.drawLaser(tile, link);
      			Draw.reset();
    		}
-	}, 
-	isLinkValid(tile, other){
-		return other != null && other.ent() != null && other.block().name == "bytmod-signalnode" && Mathf.within(tile.drawx(), tile.drawy(), other.drawx(), other.drawy(), 20) && other.getTeam() == tile.getTeam();
 	}
 });
 signalnode.category = Category.power;
