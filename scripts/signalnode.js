@@ -57,7 +57,6 @@ const signalnode = extendContent(Block, "signalnode", {
 		if(value<=0) return;
 		var other = Vars.world.tile(value);
 		if(tile==other) tile.ent().setConn(false);
-   		else if(tile.ent().getTileConf()==other.pos()&&tile.ent().getConn()) tile.ent().setConn(false);
    		else if(other.block().name == "bytmod-signalnode"){
      			tile.ent().setConn(true);
      			tile.ent().setTileConf(value);
