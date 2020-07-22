@@ -62,17 +62,19 @@ const signalnode = extendContent(Block, "signalnode", {
 	}, 
 	onConfigureTileTapped(tile, other){
 		//Draw.rect(Core.atlas.find("router"), other.x,other.y);
-		if(tile == other){
+		/*if(tile == other){
 			tile.configure(other.pos());
 			return false;
-		/*} else if(tile.getConn()&&other == Vars.world.tile(tile.ent().getTileConf())){
+		} else if(tile.getConn()&&other == Vars.world.tile(tile.ent().getTileConf())){
 			tile.configure(tile.pos());
-			return false;*/
+			return false;
 		} else if(other.block().name == "bytmod-signalnode"){
 			tile.configure(other.pos());
 			return false;	
-		} else return true;
-				
+		} else return true;*/
+		if(isLinkValid(tile, other)){
+			tile.configure(Vars.world.tile(tile.ent().getTileConf()) == other ? Vars.world.tile(tile.pos()).pos() : other.pos());
+		}
 	},
 	drawLaser(tile,target){
    		var opacityPercentage = Core.settings.getInt("lasersopacity");
@@ -81,7 +83,6 @@ const signalnode = extendContent(Block, "signalnode", {
 
    		var x1 = tile.drawx(); var y1 = tile.drawy();
    		var x2 = target.drawx(); var y2 = target.drawy();
-
    		var angle1 = Angles.angle(x1, y1, x2, y2);
    		this.t1.trns(angle1, tile.block().size * Vars.tilesize / 2 - 1.5);
    		this.t2.trns(angle1 + 180, target.block().size * Vars.tilesize / 2 - 1.5);
@@ -122,6 +123,9 @@ const signalnode = extendContent(Block, "signalnode", {
      			this.drawLaser(tile, link);
      			Draw.reset();
    		}
+	}, 
+	isLinkValid(tile, other){
+		return other != null && other.ent() != null && other.block().name == "bytmod-signalnode" && Mathf.within(tile.drawx(), tile.drawy(), other.drawx(), other.drawy(), 20) && other.getTeam() == tile.getTeam();
 	}
 });
 signalnode.category = Category.power;
