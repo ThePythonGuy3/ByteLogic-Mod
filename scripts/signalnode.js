@@ -80,7 +80,7 @@ const signalnode = extendContent(Block, "signalnode", {
 			return false;	
 		} else return true;*/
 		if(isLinkValid(tile, other)){
-			tile.configure(Vars.world.tile(tile.ent().getTileConf()) == other ? Pos.invalid : other.pos());
+			tile.configure(other.pos());
 		}
 	},
 	drawLaser(tile,target){
