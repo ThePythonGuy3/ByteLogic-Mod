@@ -38,6 +38,18 @@ const relay = extendContent(Block, "relay", {
 		if(tile.getNearby(3).block().name.startsWith("bytmod") && tile.getNearby(3).rotation()*90 == 90){
 			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
 		}
+		if((tile.back().block().name == "bytmod-signalrouter" || tile.back().block().name == "bytmod-signalnode") && tile.back().ent().asignal()){
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 270);
+		}
+		if((tile.front().block().name == "bytmod-signalrouter" || tile.front().block().name == "bytmod-signalnode") && tile.front().ent().asignal()){
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 90);
+		}
+		if((tile.right().block().name == "bytmod-signalrouter" || tile.right().block().name == "bytmod-signalnode") && tile.right().ent().asignal()){
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 0);
+		}
+		if((tile.left().block().name == "bytmod-signalrouter" || tile.left().block().name == "bytmod-signalnode") && tile.left().ent().asignal()){
+			Draw.rect(Core.atlas.find(this.name), tile.drawx(), tile.drawy(), 180);
+		}
 		Draw.reset();
 	},
   	setBars(){
