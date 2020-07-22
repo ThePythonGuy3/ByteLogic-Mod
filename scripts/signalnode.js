@@ -98,7 +98,7 @@ const signalnode = extendContent(Block, "signalnode", {
 		if(Core.settings.getInt("lasersopacity") == 0) return;
    		if(!tile.ent().getConn()) return;
    		var link=Vars.world.tile(tile.ent().getTileConf());
-   		if(link!=null&&link.block().hasItems){
+   		if(link!=null&&link.block().name == "bytmod-signalnode"){
      			this.drawLaser(tile, link);
      			Draw.reset();
    		}
