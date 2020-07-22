@@ -165,6 +165,6 @@ signalnode.entityType = prov(() => {
 	});
 	entity.setSignal(0);
 	entity.setConn(false);
-	entity.setAsignal(entity.getConn()?false:true);
+	entity.setAsignal(true);
 	return entity;
 });
