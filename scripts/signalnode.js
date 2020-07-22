@@ -8,7 +8,7 @@ const signalnode = extendContent(Block, "signalnode", {
 	},
 	update(tile){
 		entity = tile.ent();
-		entity.setAsignal(entity.getConn()?false:true);
+		entity.setAsignal(entity.getConn());
 		if(entity.getConn()){
 			var conntile = Vars.world.tile(entity.getTileConf());
 			conntile.ent().setConn(false);
