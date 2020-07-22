@@ -22,7 +22,7 @@ const signalnode = extendContent(Block, "signalnode", {
            		tile.back().ent().setSignal(entity.getSignal());
        		}
 		if(tilel.isMod(tile.right()) && tile.right().ent().asignal() == true && !tilel.pointingAt(tile.right(), tile)){
-           		tile.right().ent().setSignal(entity.getSignal());}
+           		tile.right().ent().setSignal(entity.getSignal());
        		}
 		if(tilel.isMod(tile.left()) && tile.left().ent().asignal() == true && !tilel.pointingAt(tile.left(), tile)){
            		tile.left().ent().setSignal(entity.getSignal());
