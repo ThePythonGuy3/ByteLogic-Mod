@@ -7,7 +7,13 @@ const signalnode = extendContent(Block, "signalnode", {
 		this.t1=new Vec2(); this.t2=new Vec2();
 	},
 	update(tile){
-		entity = tile.ent()
+		entity = tile.ent();
+		entity.setAsignal(entity.getConn()?false:true);
+		if(entity.getConn()){
+			var conntile = Vars.world.tile(entity.getTileConf());
+			conntile.setConn(false);
+			conntile.setSignal(entity.getSignal);
+		}
 	},
  	generateIcons(){
    		return[
@@ -77,13 +83,13 @@ const signalnode = extendContent(Block, "signalnode", {
    		Draw.reset();
  	}, 
 	drawConfigure(tile){
-		Draw.color(Pal.accent);
 		Lines.stroke(2);
 		if(tile.ent().getConn()){
 			Draw.color(Color.royal);
 			var tule = Vars.world.tile(tile.ent().getTileConf());
 			Lines.square(tule.drawx(),tule.drawy(),9,45);
 		} 
+		Draw.color(Pal.accent);
 		Lines.circle(tile.drawx(),tile.drawy(),Mathf.sinDeg(Time.time()*6)+7);
 		Lines.stroke(3);
 		Draw.color(Color.coral);
@@ -141,8 +147,7 @@ signalnode.entityType = prov(() => {
 
 	});
 	entity.setSignal(0);
-	entity.setio(true);
-	entity.setAsignal(entity.getio());
 	entity.setConn(false);
+	entity.setAsignal(entity.getConn()?false:true);
 	return entity;
 });
