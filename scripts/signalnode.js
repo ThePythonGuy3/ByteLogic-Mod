@@ -8,13 +8,13 @@ const signalnode = extendContent(Block, "signalnode", {
 	},
 	update(tile){
 		entity = tile.ent();
-		entity.setAsignal(entity.getConn()?false:true);
+		/*entity.setAsignal(entity.getConn()?false:true);
 		if(entity.getConn()){
 			var conntile = Vars.world.tile(entity.getTileConf());
 			conntile.ent().setConn(false);
 			conntile.ent().setSignal(entity.getSignal());
 		}
-		/*if(tile.ent().asignal() == false){
+		if(tile.ent().asignal() == false){
 		if(tilel.isMod(tile.front()) && tile.front().ent().asignal() == true && !tilel.pointingAt(tile.front(), tile)){
            		tile.front().ent().setSignal(entity.getSignal());
        		}
