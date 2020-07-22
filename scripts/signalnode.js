@@ -11,8 +11,8 @@ const signalnode = extendContent(Block, "signalnode", {
 		entity.setAsignal(entity.getConn()?false:true);
 		if(entity.getConn()){
 			var conntile = Vars.world.tile(entity.getTileConf());
-			conntile.setConn(false);
-			conntile.setSignal(entity.getSignal);
+			conntile.ent().setConn(false);
+			conntile.ent().setSignal(entity.getSignal);
 		}
 	},
  	generateIcons(){
