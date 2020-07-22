@@ -14,6 +14,18 @@ const signalnode = extendContent(Block, "signalnode", {
 			conntile.ent().setConn(false);
 			conntile.ent().setSignal(entity.getSignal());
 		}
+		if(tilel.isMod(tile.front()) && tile.front().ent().asignal() == true && !tilel.pointingAt(tile.front(), tile)){
+           		tile.front().ent().setSignal(entity.getSignal());
+       		}
+		if(tilel.isMod(tile.back()) && tile.back().ent().asignal() == true && !tilel.pointingAt(tile.back(), tile)){
+           		tile.back().ent().setSignal(entity.getSignal());
+       		}
+		if(tilel.isMod(tile.right()) && tile.right().ent().asignal() == true && !tilel.pointingAt(tile.right(), tile)){
+           		tile.right().ent().setSignal(entity.getSignal());
+       		}
+		if(tilel.isMod(tile.left()) && tile.left().ent().asignal() == true && !tilel.pointingAt(tile.left(), tile)){
+           		tile.left().ent().setSignal(entity.getSignal());
+       		} 
 	},
  	generateIcons(){
    		return[
@@ -53,6 +65,9 @@ const signalnode = extendContent(Block, "signalnode", {
 		//Draw.rect(Core.atlas.find("router"), other.x,other.y);
 		if(tile == other){
 			tile.configure(other.pos());
+			return false;
+		} else if(other == Vars.world.tile(tile.ent().getTileConf)){
+			tile.configure(tile.pos());
 			return false;
 		} else if(other.block().name == "bytmod-signalnode"){
 			tile.configure(other.pos());
