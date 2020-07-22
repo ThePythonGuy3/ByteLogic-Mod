@@ -13,19 +13,19 @@ const signalnode = extendContent(Block, "signalnode", {
 			var conntile = Vars.world.tile(entity.getTileConf());
 			conntile.ent().setConn(false);
 			conntile.ent().setSignal(entity.getSignal());
-			if(tilel.isMod(tile.front()) && tile.front().ent().asignal() == true && !tilel.pointingAt(tile.front(), tile)){
-           			tile.front().ent().setSignal(entity.getSignal());
-       			}
-			if(tilel.isMod(tile.back()) && tile.back().ent().asignal() == true && !tilel.pointingAt(tile.back(), tile)){
-           			tile.back().ent().setSignal(entity.getSignal());
-       			}
-			if(tilel.isMod(tile.right()) && tile.right().ent().asignal() == true && !tilel.pointingAt(tile.right(), tile)){
-           			tile.right().ent().setSignal(entity.getSignal());
-       			}
-			if(tilel.isMod(tile.left()) && tile.left().ent().asignal() == true && !tilel.pointingAt(tile.left(), tile)){
-           			tile.left().ent().setSignal(entity.getSignal());
-       			}
 		}
+		if(tilel.isMod(tile.front()) && tile.front().ent().asignal() == true && !tilel.pointingAt(tile.front(), tile)){
+           		tile.front().ent().setSignal(entity.getSignal());
+       		}
+		if(tilel.isMod(tile.back()) && tile.back().ent().asignal() == true && !tilel.pointingAt(tile.back(), tile)){
+           		tile.back().ent().setSignal(entity.getSignal());
+       		}
+		if(tilel.isMod(tile.right()) && tile.right().ent().asignal() == true && !tilel.pointingAt(tile.right(), tile)){
+           		tile.right().ent().setSignal(entity.getSignal());
+       		}
+		if(tilel.isMod(tile.left()) && tile.left().ent().asignal() == true && !tilel.pointingAt(tile.left(), tile)){
+           		tile.left().ent().setSignal(entity.getSignal());
+       		}
 	},
  	generateIcons(){
    		return[
