@@ -2,7 +2,7 @@ const tilel = require("tilelib");
 const explosives = extendContent(Block, "explosives", {
 	update(tile){
 		if(tile.ent().getSignal()>0){
-			Damage.dynamicExplosion(tile.drawx(), tile.drawy(), 5, 10, 10, 300, Color.valueOf("ff795e"));
+			Damage.dynamicExplosion(tile.drawx(), tile.drawy(), 10, 50, 1600, 20, Color.valueOf("ff795e"));
 			tile.ent().kill();
 		}
 	},
