@@ -13,7 +13,7 @@ function closest(team, x, y, radius) {
 const entitypointer = extendContent(Block, "entitypointer", {
 	update(tile){
 		entity = tile.ent();
-    	target = closest(tile.drawx(), tile.drawy(), 200);
+    	target = closest(tile.getTeam(), tile.drawx(), tile.drawy(), 200);
     	if(target != null){
     		entity.setSignal(Angles.angle(tile.drawx(), tile.drawy(), target.x, target.y));
     	} else {
