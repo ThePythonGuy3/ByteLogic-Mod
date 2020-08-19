@@ -2,6 +2,7 @@ const tilel = require("tilelib");
 function closest(team, x, y, radius) {
         var u1 = Units.closest(team, x, y, radius, boolp(e => !e.isDead()));
 	var u2 = Units.closestEnemy(team, x, y, radius, boolp(e => !e.isDead()));
+	if(u1 == null || u2 == null) return;
 	if(Mathf.dstm(x, y, u1.x, u1.x)<Mathf.dstm(x, y, u2.x, u2.y)){
 		result = u1;
 	}else{
