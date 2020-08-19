@@ -1,24 +1,20 @@
 const tilel = require("tilelib");
-function closest(x, y, width, height, predicate) {
-        result = null;
-        cdist = 0.0;
-        Units.nearby(x, y, width, height, cons(e => {
-            if (predicate.get(e)) {
-                dist = Mathf.dst2(e.x, e.y, x, y);
-                if (result == null || dist < cdist) {
-                    result = e;
-                    cdist = dist;
-                }
-            }
-        }));
+function closest(team, x, y, radius) {
+        var u1 = Units.closest(team, x, y, radius, boolp(e => !e.isDead()));
+	var u2 = Units.closestEnemy(team, x, y, radius, boolp(e => !e.isDead()));
+	if(Mathf.dstm(x, y, u1.x, u1.x)<Mathf.dstm(x, y, u2.x, u2.y)){
+		result = u1;
+	}else{
+		result = u2;
+	}
         return result;
 }
 const entitypointer = extendContent(Block, "entitypointer", {
 	update(tile){
 		entity = tile.ent();
-    	target = closest(tile.worldx(), tile.worldy(), Vars.tilesize * (10 + this.size / 2), boolp(e => !e.isDead));
+    	target = closest(tile.drawx(), tile.drawy(), 200);
     	if(target != null){
-    		entity.setSignal(Angles.angle(tile.drawx(), tile.drawy(), target.getX(), target.getY()));
+    		entity.setSignal(Angles.angle(tile.drawx(), tile.drawy(), target.x, target.y));
     	} else {
     		entity.setSignal(0);
     	}
