@@ -39,11 +39,11 @@ const entitypointer = extendContent(Block, "entitypointer", {
 	},
 	draw(tile){
 		entity = tile.ent();
-		target = UnitsUtil.closest(tile.worldx(), tile.worldy(), Vars.tilesize * (10 + size / 2), boolp(() => true));
+		target = closest(tile.getTeam(), tile.drawx(), tile.drawy(), 200);
 		Draw.rect(Core.atlas.find("bytmod-logic-base"), tile.drawx(), tile.drawy(), 8, 8);
 		Draw.color(entity.getSignal() > 0 ? Pal.accent : Color.white);
 		if(target != null){
-			Lines.lineAngle(tile.drawx(), tile.drawy(), Angles.angle(tile.drawx(), tile.drawy(), target.getX(), target.getY()), 1.5);
+			Lines.lineAngle(tile.drawx(), tile.drawy(), Angles.angle(tile.drawx(), tile.drawy(), target.x, target.y), 1.5);
 		} else {
 			Lines.lineAngle(tile.drawx(), tile.drawy(), 0, 1.5);
 		}
